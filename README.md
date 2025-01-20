@@ -13,5 +13,7 @@ Project Description: A website where you input a picture of yourself and get per
 
 Features:
 Celebrity/Model Matching: Users upload a photo of their face. The app uses a face similarity model to match the uploaded face to a database of celebrities or models. 
+
 Hairstyle Options: Once a similar celebrity/model is found, the app fetches multiple hairstyles from a pre-curated database of that celebrity’s past looks.
+
 Style Options: Users can get ideas of past outfits/styles of the celebrity.
