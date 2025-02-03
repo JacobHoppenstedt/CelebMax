@@ -1,6 +1,9 @@
-Flask==2.2.2
-DeepFace==0.0.79
-numpy==1.23.5
-opencv-python==4.7.0.72
-scipy==1.9.3
-torch==2.0.0
+flask
+numpy
+scipy
+pillow
+matplotlib
+deepface
+scikit-learn
+joblib
+tensorflow==2.12.0
