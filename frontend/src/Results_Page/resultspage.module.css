@@ -1,7 +1,54 @@
 body{
+    box-sizing: border-box;
     background-color: #C0A582;
     background-image: url("../assets/background.png");
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
+}
+
+.header {
+  /* Use grid to neatly position left, center, and right items */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  width: 100%;
+  z-index: 1000;
+  box-sizing: border-box;
+}
+
+/* Logo on the far left */
+.logo {
+    height: 5rem;
+
+}
+
+/* Title in the center */
+.title {
+  font-family: "OceanTrace", sans-serif;
+  font-size: 2.5rem;
+  color: #347C9B;
+  margin: 0;
+}
+
+/* Button on the far right */
+.goBackButton {
+  border-radius: 22px;
+  background: #AA8B6D;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem 1.2rem;
+  /* Center contents vertically in case the icon is tall */
+  display: flex;
+  align-items: center;
+}
+
+.goBackButton:hover {
+  background: #9b7f64;
+}
+
+.backicon {
+  width: 1.2rem;
+  margin-right: 0.5rem;
 }
