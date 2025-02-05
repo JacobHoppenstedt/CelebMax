@@ -6,4 +6,3 @@ matplotlib
 deepface
 scikit-learn
 joblib
-tensorflow==2.12.0rc0
