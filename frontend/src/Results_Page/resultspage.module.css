@@ -7,12 +7,19 @@ body{
     background-size: cover;
 }
 
+.sectionHeader {
+  color: #E8E8E8;
+  font-family: Poppins, sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+
 .header {
-  /* Use grid to neatly position left, center, and right items */
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1rem;
+  padding: 0.4rem;
   width: 100%;
   z-index: 1000;
   box-sizing: border-box;
@@ -20,14 +27,14 @@ body{
 
 /* Logo on the far left */
 .logo {
-    height: 5rem;
+    height: 4.5rem;
 
 }
 
 /* Title in the center */
 .title {
   font-family: "OceanTrace", sans-serif;
-  font-size: 2.5rem;
+  font-size: 2.3rem;
   color: #347C9B;
   margin: 0;
 }
@@ -39,6 +46,8 @@ body{
   border: none;
   cursor: pointer;
   padding: 0.5rem 1.2rem;
+  font-size: 1rem;
+
   /* Center contents vertically in case the icon is tall */
   display: flex;
   align-items: center;
@@ -51,4 +60,57 @@ body{
 .backicon {
   width: 1.2rem;
   margin-right: 0.5rem;
+}
+
+/***** "Your Picture" Section *****/
+.yourPictureSection {
+  margin-bottom: 2rem;
+}
+
+.yourPicture {
+  width: 140px;
+  height: 140px; 
+  object-fit: cover;
+  border-radius: 12px;
+  margin-top: 1rem;
+}
+
+/***** "Matched Celebrities" Section *****/
+.matchedCelebsSection {
+  margin-bottom: 3rem; 
+}
+
+.celebList {
+  /* Put celeb cards in a row, centered */
+  display: flex;
+  justify-content: center;
+  gap: 3rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+
+.celebCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 130px;
+}
+
+.celebImg {
+  width: 110px;
+  height: 140px; 
+  object-fit: cover;
+  border-radius: 12px; 
+  margin-bottom: 0.5rem;
+}
+
+.celebName {
+  font-weight: 600; 
+  margin: 0;
+}
+
+.celebMatch {
+  font-size: 0.9rem;
+  color: #555;
+  margin: 0;
 }
