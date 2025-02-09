@@ -5,3 +5,21 @@ body{
     background-position: center;
     background-size: cover;
 }
+
+.title {
+    font-family: "OceanTrace", sans-serif;
+    font-size: 2.3rem;
+    color: #347C9B;
+    margin: 0;
+  }
+
+.title2 {
+    font-family: "Poppins", sans-serif;
+    font-size: 1.4rem;
+    margin: 0;
+}
+
+.ruleSection{
+    font-family: "Poppins", sans-serif;
+    margin: 0;
+  }
