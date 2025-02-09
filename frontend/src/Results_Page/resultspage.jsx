@@ -94,8 +94,10 @@ const ResultsPage = () => {
                 <p className={styles.celebName}>Taylor Swift</p>
                 <p className={styles.celebMatch}>84% match</p>
               </div>
-
             </div>
+            <button className={styles.hairstylesButton}>
+              See Hairsyles & Outfits
+            </button>
           </div>
         </div>
       </div>
