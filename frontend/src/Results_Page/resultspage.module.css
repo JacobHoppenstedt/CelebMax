@@ -64,12 +64,13 @@ body{
 
 /***** "Your Picture" Section *****/
 .yourPictureSection {
+  margin-top: 1rem;
   margin-bottom: 2rem;
 }
 
 .yourPicture {
-  width: 140px;
-  height: 140px; 
+  width: 130px;
+  height: 130px; 
   object-fit: cover;
   border-radius: 12px;
   margin-top: 1rem;
@@ -97,8 +98,8 @@ body{
 }
 
 .celebImg {
-  width: 110px;
-  height: 140px; 
+  width: 100px;
+  height: 130px; 
   object-fit: cover;
   border-radius: 12px; 
   margin-bottom: 0.5rem;
@@ -113,4 +114,15 @@ body{
   font-size: 0.9rem;
   color: #555;
   margin: 0;
+}
+
+.hairstylesButton {
+  font-size: 1.2rem;
+  margin-top: 2rem;
+  border-radius: 50px;
+  background: #347C9B;
+}
+
+.hairstylesButton:hover {
+  background: #2e6f8a;
 }

@@ -1,8 +1,9 @@
 flask
 numpy
 scipy
-pillow
+opencv-python
 matplotlib
-deepface
 scikit-learn
 joblib
+insightface
+onnxruntime
