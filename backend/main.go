@@ -74,7 +74,7 @@ func uploadImage(filePath string, url string) (map[string]interface{}, error) {
 
 func main() {
 	// Call the Python service with your user image
-	result, err := uploadImage("../test/jacobimage.jpg", "http://localhost:5000/predict")
+	result, err := uploadImage("../test/jacobimage.jpg", "http://localhost:5001/predict")
 	if err != nil {
 		panic(err)
 	}

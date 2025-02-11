@@ -1,17 +1,20 @@
 from flask import Flask, request, jsonify
 import numpy as np
 import joblib
-from deepface import DeepFace
 from scipy.spatial.distance import cosine
-from PIL import Image
+import cv2
 import os
-
+import insightface
 app = Flask(__name__)
 
 # Paths to the model and data files
 kmeans_model_file = "kmeans_model.pkl"
 clustered_output_path = "clustered_embeddings.npy"
 celebrity_dir = "Celebrity_Faces_Dataset"
+
+# Load the FaceAnalysis model from InsightFace
+model = insightface.app.FaceAnalysis(name="buffalo_l", providers=['CPUExecutionProvider'])
+model.prepare(ctx_id=-1, det_size=(224, 224))
 
 # Load the KMeans model and clustered embeddings
 kmeans = joblib.load(kmeans_model_file)
@@ -28,26 +31,35 @@ def predict():
     user_img_path = "temp_user_image.jpg"
     file.save(user_img_path)
 
+    img = cv2.imread(user_img_path)
+    if img is None:
+        return jsonify({"error": "Unable to read the image file"}), 400
+    img = cv2.resize(img, (224, 224))
+
     try:
         # Generate embedding for the user's image using DeepFace
-        user_embedding = DeepFace.represent(img_path=user_img_path, model_name="ArcFace")[0]['embedding']
+        faces = model.get(img)
+        if not faces:
+            return jsonify({"error": "No faces detected in the image"}), 400
+
+        # Check if multiple faces are detected and use the first one
+        if len(faces) > 1:
+            # Optionally, you could return an error or select the most confident face
+            print(f"Multiple faces detected. Using the first face.")
+
+        user_embedding = faces[0].normed_embedding # Get the embedding
         user_embedding = np.array(user_embedding, dtype=np.float32)
-
-        # Predict the cluster for the user's image using the KMeans model
         user_cluster = kmeans.predict(user_embedding.reshape(1, -1))[0]
-
-        # Filter embeddings to only those in the same cluster as the user's image
-        clustered_embeddings = [
-            row for row in clustered_embeddings_with_filenames if int(row[-1]) == user_cluster
-        ]
+        similarity_scores = []
+        for row in clustered_embeddings_with_filenames:  # Iterate through all images
+            img_file, *celeb_embedding, cluster_id = row  # Extract filename, embedding, and cluster
+            celeb_embedding = np.array(celeb_embedding, dtype=np.float32)  # Ensure correct dtype
+    
+            distance = cosine(user_embedding, celeb_embedding)  # Compute cosine similarity
+            similarity_scores.append((img_file, distance))
 
         # Calculate similarity scores (cosine distance) between the user's embedding and celebrity embeddings
-        similarity_scores = []
-        for row in clustered_embeddings:
-            img_file, *celeb_embedding, cluster_id = row  # Extract filename, embedding, and cluster
-            celeb_embedding = np.array(celeb_embedding)
-            distance = cosine(user_embedding, celeb_embedding)  # Compute cosine distance
-            similarity_scores.append((img_file, distance))
+
 
         # Sort by distance and get the top 10 matches
         top_10_matches = sorted(similarity_scores, key=lambda x: x[1])[:10]
@@ -92,4 +104,4 @@ def get_celebrity_image(filename):
 
 if __name__ == '__main__':
     # Run the Flask app
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port=5001)
