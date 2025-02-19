@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from "./resultspage.module.css";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 // Image Imports
 import Logo from "../assets/logo.png";
@@ -11,6 +11,11 @@ import TimotheeChalamet from "../assets/timothee_chalamet.png";
 
 const ResultsPage = () => {
   const navigate = useNavigate();
+  const { state } = useLocation();
+
+  const userFile = state?.userFile;
+  const userImageUrl = userFile ? URL.createObjectURL(userFile) : null;
+
   const handleGoBack = () => {
       navigate('/');
   };
@@ -33,7 +38,7 @@ const ResultsPage = () => {
           <div className={styles.yourPictureSection}>
             <h2>Your Picture</h2>
             <img 
-              src={TimotheeChalamet} 
+              src={userImageUrl || TimotheeChalamet} 
               alt="Your Picture"
               className={styles.yourPicture}
             />
