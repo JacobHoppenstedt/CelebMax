@@ -3,7 +3,6 @@ package main
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"io"
 	"mime/multipart"
 	"net/http"
@@ -35,7 +34,70 @@ func copyFile(src, dst string) error {
 	return err
 }
 
-// The user uploads an image, call the Python microservice, then copy top matches
+// // The user uploads an image, call the Python microservice, then copy top matches
+// func matchHandler(c *gin.Context) {
+// 	file, err := c.FormFile("image")
+// 	if err != nil {
+// 		c.JSON(http.StatusBadRequest, gin.H{"error": "No image file provided"})
+// 		return
+// 	}
+
+// 	// Save temporarily
+// 	tempPath := "./temp_upload.jpg"
+// 	if err := c.SaveUploadedFile(file, tempPath); err != nil {
+// 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to save temp file"})
+// 		return
+// 	}
+// 	defer os.Remove(tempPath) // Clean up
+
+// 	// Now call python microservice
+// 	result, err := uploadImage(tempPath, "http://localhost:5000/predict")
+// 	if err != nil {
+// 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Call to python service failed", "details": err.Error()})
+// 		return
+// 	}
+
+// 	topMatches, ok := result["top_matches"].([]interface{})
+// 	if !ok {
+// 		c.JSON(http.StatusOK, gin.H{"message": "No top_matches found or invalid format", "result": result})
+// 		return
+// 	}
+
+// 	// Create a folder for the top matches
+// 	outputDir := "./top_matches"
+// 	if err := os.MkdirAll(outputDir, 0755); err != nil {
+// 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create top_matches folder"})
+// 		return
+// 	}
+
+// 	// Copy images
+// 	copiedFiles := []string{}
+// 	for _, item := range topMatches {
+// 		matchMap, ok := item.(map[string]interface{})
+// 		if !ok {
+// 			continue
+// 		}
+// 		imgName, _ := matchMap["image"].(string)
+// 		distance, _ := matchMap["distance"].(float64)
+
+// 		fmt.Printf("Copying match: %s (distance=%.4f)\n", imgName, distance)
+
+// 		srcPath := filepath.Join("../python-service", "Celebrity_Faces_Dataset", imgName)
+// 		dstPath := filepath.Join(outputDir, imgName)
+
+// 		if copyErr := copyFile(srcPath, dstPath); copyErr != nil {
+// 			fmt.Printf("Error copying %s: %v\n", imgName, copyErr)
+// 		} else {
+// 			copiedFiles = append(copiedFiles, imgName)
+// 		}
+// 	}
+
+// 	c.JSON(http.StatusOK, gin.H{
+// 		"message":      "Match success",
+// 		"copied_files": copiedFiles,
+// 	})
+// }
+
 func matchHandler(c *gin.Context) {
 	file, err := c.FormFile("image")
 	if err != nil {
@@ -43,60 +105,26 @@ func matchHandler(c *gin.Context) {
 		return
 	}
 
-	// Save temporarily
+	// Save file temporarily
 	tempPath := "./temp_upload.jpg"
 	if err := c.SaveUploadedFile(file, tempPath); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to save temp file"})
 		return
 	}
-	defer os.Remove(tempPath) // Clean up
+	defer os.Remove(tempPath)
 
-	// Now call python microservice
+	// Call Python microservice
 	result, err := uploadImage(tempPath, "http://localhost:5000/predict")
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Call to python service failed", "details": err.Error()})
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error":   "Call to python service failed",
+			"details": err.Error(),
+		})
 		return
 	}
 
-	topMatches, ok := result["top_matches"].([]interface{})
-	if !ok {
-		c.JSON(http.StatusOK, gin.H{"message": "No top_matches found or invalid format", "result": result})
-		return
-	}
-
-	// Create a folder for the top matches
-	outputDir := "./top_matches"
-	if err := os.MkdirAll(outputDir, 0755); err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create top_matches folder"})
-		return
-	}
-
-	// Copy images
-	copiedFiles := []string{}
-	for _, item := range topMatches {
-		matchMap, ok := item.(map[string]interface{})
-		if !ok {
-			continue
-		}
-		imgName, _ := matchMap["image"].(string)
-		distance, _ := matchMap["distance"].(float64)
-
-		fmt.Printf("Copying match: %s (distance=%.4f)\n", imgName, distance)
-
-		srcPath := filepath.Join("../python-service", "Celebrity_Faces_Dataset", imgName)
-		dstPath := filepath.Join(outputDir, imgName)
-
-		if copyErr := copyFile(srcPath, dstPath); copyErr != nil {
-			fmt.Printf("Error copying %s: %v\n", imgName, copyErr)
-		} else {
-			copiedFiles = append(copiedFiles, imgName)
-		}
-	}
-
-	c.JSON(http.StatusOK, gin.H{
-		"message":      "Match success",
-		"copied_files": copiedFiles,
-	})
+	// Rreturns the full "result"
+	c.JSON(http.StatusOK, result)
 }
 
 // uploadImage calls the Python service

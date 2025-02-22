@@ -21,14 +21,37 @@ const LandingPage = () => {
     }
   }
 
-  // Called automatically when the user picks a file
-  function handleFileChange(event) {
+  // When the user picks a file
+  async function handleFileChange(event) {
     const selectedFile = event.target.files[0];
+    if (!selectedFile) return;
 
-    if (selectedFile) {
-      setFile(selectedFile);
-      // Immediately navigate to /results and pass the file in router state
-      navigate('/results', { state: { userFile: selectedFile } });
+    setFile(selectedFile);
+
+    // Build FormData to send to Go
+    const formData = new FormData();
+    formData.append("image", selectedFile);
+
+    try {
+      // Send image to the Go backend (/match)
+      const response = await fetch("http://localhost:8080/match", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error(`Server error: ${response.statusText}`);
+      }
+
+      // AI response from Go (which calls Python)
+      const data = await response.json();
+      console.log("AI Response =>", data);
+
+      // Navigate to /results, passing userFile & matchData
+      navigate("/results", { state: { userFile: selectedFile, matchData: data } });
+    } catch (error) {
+      console.error("Upload failed:", error);
+      alert("Failed to process image. Please try again.");
     }
   }
 

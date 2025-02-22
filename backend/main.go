@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
@@ -24,20 +25,24 @@ func main() {
 	// 3. Setup Gin router
 	r := gin.Default()
 
+	// 4. Enable CORS so that the react server can interact with the backend server
+	r.Use(cors.Default())
+
 	// Auth routes
 	r.POST("/signup", signupHandler)
 	r.POST("/signin", signinHandler)
 
-	// Protected routes
-	protected := r.Group("/")
-	protected.Use(authMiddleware)
-	{
-		protected.POST("/match", matchHandler)
-		// When we get to favorites
+	// Protected routes when we get the frontend to be able to login
+	// protected := r.Group("/")
+	// protected.Use(authMiddleware)
+	// {
+	// 	protected.POST("/match", matchHandler)
+	// 	// When we get to favorites
 
-		// protected.POST("/favorites", addFavoriteHandler)
-		// protected.GET("/favorites", listFavoritesHandler)
-	}
+	// 	// protected.POST("/favorites", addFavoriteHandler)
+	// 	// protected.GET("/favorites", listFavoritesHandler)
+	// }
+	r.POST("/match", matchHandler)
 	fmt.Println("Server is running on http://localhost:8080")
 	r.Run(":8080")
 }

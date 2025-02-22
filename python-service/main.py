@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_file
 import numpy as np
 import joblib
 from scipy.spatial.distance import cosine
@@ -91,13 +91,11 @@ def predict():
 @app.route('/celebrity_images/<filename>', methods=['GET'])
 def get_celebrity_image(filename):
     try:
-        # Construct the full path to the celebrity image
-        image_path = os.path.join(celebrity_dir, filename)
-        if not os.path.exists(image_path):
-            return jsonify({"error": "Image not found"}), 404
+        # Build the path to your file
+        path = os.path.join(celebrity_dir, filename)
 
-        # Return the image file
-        return app.send_file(image_path, mimetype='image/jpeg')
+        # Use Flask's send_file to return the image
+        return send_file(path, mimetype='image/jpeg')
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
