@@ -11,6 +11,10 @@ body{
     font-size: 2.3rem;
     color: #347C9B;
     margin: 0;
+    padding: 0;
+    position: relative;
+    top: 18px;
+    left: 50px
   }
 
 .title2 {

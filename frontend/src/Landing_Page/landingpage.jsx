@@ -7,6 +7,7 @@ import Taylor from '../assets/taylor_swift.png';
 import TheRock from '../assets/the_rock.png';
 import RDJ from '../assets/robert_downey_jr.png';
 import Logo from '../assets/logo.png';
+import Star from '../assets/star.png';
 import styles from "./landingpage.module.css";
 
 const LandingPage = () => {
@@ -57,45 +58,69 @@ const LandingPage = () => {
 
   return (
     <div>
+    <header className = {styles.header}>
       {/* Website Logo and Header */}
-      <img
-        style={{ width: "125px", height: "110px", textAlign: "left" }}
-        src={Logo}
-        alt="logo"
-      />
-      <h1 className={styles.title}>CelebMax</h1>
-      <br />
-      <h2 className={styles.title2}>Find Your Look, Inspired By Stars.</h2>
 
+      <h1 className = {styles.title}> CelebMax</h1>
+      <img
+          style={{width: "115px", height: "100px", marginTop: "-60px", marginRight: "300px"}}
+          src={Logo}
+          alt="logo"
+      />
+      <img
+          style={{width: "100px", height: "85px", float: "left", marginTop: "-50px"}}
+          src={Star}
+          alt="star"
+      />
+      <img
+          style={{width: "100px", height: "85px", float: "right", marginTop: "-50px"}}
+          src={Star}
+          alt="star"
+      />
+      
+    </header>
+
+    <header2 className = {styles.header2}> 
+      <br/>
+      <h2 className={styles.title2}>Find Your Look, Inspired By Stars.</h2>
+    </header2>
+
+    <ruleSection1 className = {styles.ruleSection1}>
+      <br/>
       {/* First rule and first two images */}
-      <img style={{ width: "110px", height: "130px", float: "left" }} src={Timothee} alt="Celeb1" />
-      <img style={{ width: "110px", height: "130px", float: "right" }} src={Brad} alt="Celeb2" />
+      <img style={{ width: "110px", height: "130px", float: "left", marginLeft: "40px" }} src={Timothee} alt="Celeb1" />
+      <img style={{ width: "110px", height: "130px", float: "right", marginRight: "40px" }} src={Brad} alt="Celeb2" />
       <br/><br />
       <p className={styles.ruleSection}>
         1. Add a picture of yourself and let us find celebrities who look like you.
       </p>
       <br />
 
-      {/* Second rule and second two images */}
-      <img style={{ width: "120px", height: "140px", float: "left" }} src={Zendaya} alt="Celeb3" />
-      <img style={{ width: "120px", height: "140px", float: "right" }} src={Taylor} alt="Celeb4" />
+    </ruleSection1>
+
+    <ruleSection2 className = {styles.ruleSection2}>
+    {/* Second rule and second two images */}
+      <img style={{ width: "120px", height: "140px", float: "left", marginTop: "60px", marginLeft: "-60px" }} src={Zendaya} alt="Celeb3" />
+      <img style={{ width: "120px", height: "140px", float: "right", marginTop: "60px", marginRight: "-60px" }} src={Taylor} alt="Celeb4" />
       <br/><br />
       <p className={styles.ruleSection}>
         2. Discover their iconic hairstyles and outfit inspirations tailored to your look.
       </p>
       <br />
 
-      {/* Third rule and last two images */}
-      <img style={{ width: "110px", height: "130px", float: "left" }} src={TheRock} alt="Celeb5" />
-      <img style={{ width: "110px", height: "130px", float: "right" }} src={RDJ} alt="Celeb6" />
+    </ruleSection2>
+
+    {/* Third rule and last two images */}
+      <img style={{ width: "110px", height: "130px", float: "left", marginTop: "130px", marginLeft: "-40px"}} src={TheRock} alt="Celeb5" />
+      <img style={{ width: "110px", height: "130px", float: "right", marginTop: "130px", marginRight: "-40px" }} src={RDJ} alt="Celeb6" />
       <br/><br />
       <p className={styles.ruleSection}>
         3. Discover their iconic hairstyles and outfit inspirations tailored to your look!
       </p>
-      <br /><br /><br />
+      <br /><br /><br /><br />
 
-      {/* Hidden file input */}
-      <input
+  {/* Hidden file input */}
+    <input
         type="file"
         accept="image/*"
         ref={fileInputRef}
@@ -110,6 +135,7 @@ const LandingPage = () => {
       >
         Upload Photo
       </button>
+
     </div>
   );
 };
