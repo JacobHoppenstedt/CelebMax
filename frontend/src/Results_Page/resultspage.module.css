@@ -65,20 +65,20 @@ body{
 /***** "Your Picture" Section *****/
 .yourPictureSection {
   margin-top: 1rem;
-  margin-bottom: 2rem;
+  margin-bottom: 1.6rem;
 }
 
 .yourPicture {
   width: 130px;
   height: 130px; 
   object-fit: cover;
-  border-radius: 12px;
+  border-radius: 16px;
   margin-top: 1rem;
 }
 
 /***** "Matched Celebrities" Section *****/
 .matchedCelebsSection {
-  margin-bottom: 3rem; 
+  margin-bottom: 2rem; 
 }
 
 .celebList {
@@ -87,23 +87,43 @@ body{
   justify-content: center;
   gap: 3rem;
   flex-wrap: wrap;
-  margin-top: 1rem;
+  margin-top: 1.4rem;
 }
 
 .celebCard {
+  position: relative; /* Ensure the numbered circle is positioned relative to this */
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 130px;
 }
 
-.celebImg {
-  width: 100px;
-  height: 130px; 
-  object-fit: cover;
-  border-radius: 12px; 
-  margin-bottom: 0.5rem;
+.celebNumber {
+  position: absolute;
+  top: -12px; /* Moves the number above the image */
+  left: -12px; /* Moves the number to the left, outside the image */
+  background: #AA8B6D; /* Circle color */
+  color: white;
+  font-size: 1.2rem;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
 }
+
+.celebImg {
+  width: 115px; /* Downsized width */
+  height: auto; /* Height adjusts automatically to maintain aspect ratio */
+  aspect-ratio: 178 / 218; /* Ensures correct scaling */
+  object-fit: cover; /* Maintains aspect ratio and fills the space */
+  border-radius: 16px;
+  margin-bottom: 0.5rem;
+  border: 5px solid #AA8B6D;
+}
+
 
 .celebName {
   font-weight: 600; 
@@ -113,14 +133,29 @@ body{
 .celebMatch {
   font-size: 0.9rem;
   color: #555;
-  margin: 0;
+  margin-top: 0.2rem;
 }
 
 .hairstylesButton {
   font-size: 1.2rem;
-  margin-top: 2rem;
+  margin-top: 2.5rem;
   border-radius: 50px;
   background: #347C9B;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.8rem 1.5rem;
+  border: none;
+  color: white;
+  cursor: pointer;
+  text-align: center;
+  width: fit-content;
+  margin: 2.5rem auto; /* Centers the button horizontally */
+}
+
+.hairicon {
+  width: 1.3rem;
+  margin-right: 0.5rem;
 }
 
 .hairstylesButton:hover {

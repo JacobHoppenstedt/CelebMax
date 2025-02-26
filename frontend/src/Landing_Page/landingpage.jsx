@@ -92,7 +92,7 @@ const LandingPage = () => {
       <img style={{ width: "110px", height: "130px", float: "right", marginRight: "40px" }} src={Brad} alt="Celeb2" />
       <br/><br />
       <p className={styles.ruleSection}>
-        1. Add a picture of yourself and let us find celebrities who look like you.
+        1. Upload a picture of yourself, and our AI will instantly find celebrities who resemble you.
       </p>
       <br />
 
@@ -104,7 +104,7 @@ const LandingPage = () => {
       <img style={{ width: "120px", height: "140px", float: "right", marginTop: "60px", marginRight: "-60px" }} src={Taylor} alt="Celeb4" />
       <br/><br />
       <p className={styles.ruleSection}>
-        2. Discover their iconic hairstyles and outfit inspirations tailored to your look.
+        2. Browse through the results and choose a celebrity whose hairstyle you'd like to try.
       </p>
       <br />
 
@@ -115,7 +115,7 @@ const LandingPage = () => {
       <img style={{ width: "110px", height: "130px", float: "right", marginTop: "130px", marginRight: "-40px" }} src={RDJ} alt="Celeb6" />
       <br/><br />
       <p className={styles.ruleSection}>
-        3. Discover their iconic hairstyles and outfit inspirations tailored to your look!
+        3. Use our AI-powered tool to replace your hairstyle with your selected celebrity’s look and see the transformation!
       </p>
       <br /><br /><br /><br />
 

@@ -4,6 +4,7 @@ import styles from "./resultspage.module.css";
 
 import Logo from "../assets/logo.png";
 import Back from "../assets/Back.png";
+import HairCut from "../assets/Barbershop.png"
 import TimotheeChalamet from "../assets/timothee_chalamet.png";
 
 const ResultsPage = () => {
@@ -57,12 +58,16 @@ const ResultsPage = () => {
 
               return (
                 <div className={styles.celebCard} key={index}>
+                  {/* Numbered Circle */}
+                  <div className={styles.celebNumber}>{index + 1}</div>
+
+                  {/* Celebrity Image */}
                   <img
                     src={fullImageUrl}
                     alt={`Celebrity ${index}`}
                     className={styles.celebImg}
                   />
-                  <p className={styles.celebName}>{match.image}</p>
+                  {/* <p className={styles.celebName}>{match.image}</p> */}
                   <p className={styles.celebMatch}>{matchPercent}% match</p>
                 </div>
               );
@@ -70,7 +75,8 @@ const ResultsPage = () => {
           </div>
 
           <button className={styles.hairstylesButton}>
-            See Hairstyles &amp; Outfits
+            <img src={HairCut} alt="" className={styles.hairicon} />
+            Try A Celebrity's Hairstyle
           </button>
         </div>
       </div>
