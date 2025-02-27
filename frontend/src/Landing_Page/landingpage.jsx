@@ -8,10 +8,14 @@ import TheRock from '../assets/the_rock.png';
 import RDJ from '../assets/robert_downey_jr.png';
 import Logo from '../assets/logo.png';
 import Star from '../assets/star.png';
+import CropModal from '../Crop_Modal_Page/CropModal';
+
+// CSS
 import styles from "./landingpage.module.css";
 
 const LandingPage = () => {
   const [file, setFile] = useState(null);
+  const [cropping, setCropping] = useState(false);
   const fileInputRef = useRef(null);
   const navigate = useNavigate();
 
@@ -22,34 +26,48 @@ const LandingPage = () => {
     }
   }
 
-  // When the user picks a file
-  async function handleFileChange(event) {
-    const selectedFile = event.target.files[0];
+  function handleFileChange(e) {
+    const selectedFile = e.target.files[0];
     if (!selectedFile) return;
 
+    // Store the file, show crop modal
     setFile(selectedFile);
+    setCropping(true);
+  }
 
-    // Build FormData to send to Go
+    // Called when user cancels the cropping
+    function handleCropCancel() {
+      setCropping(false);
+      setFile(null);
+
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
+    }
+  
+  // Called after user saves the cropped image
+  async function handleCropSave(croppedFile) {
+    setCropping(false);
+
+    // 1) Upload the cropped image to /match
     const formData = new FormData();
-    formData.append("image", selectedFile);
+    formData.append("image", croppedFile);
 
     try {
-      // Send image to the Go backend (/match)
       const response = await fetch("http://localhost:8080/match", {
         method: "POST",
-        body: formData,
+        body: formData
       });
 
       if (!response.ok) {
         throw new Error(`Server error: ${response.statusText}`);
       }
 
-      // AI response from Go (which calls Python)
       const data = await response.json();
       console.log("AI Response =>", data);
 
-      // Navigate to /results, passing userFile & matchData
-      navigate("/results", { state: { userFile: selectedFile, matchData: data } });
+      // 2) Navigate to /results with the final cropped file
+      navigate("/results", { state: { userFile: croppedFile, matchData: data } });
     } catch (error) {
       console.error("Upload failed:", error);
       alert("Failed to process image. Please try again.");
@@ -119,8 +137,8 @@ const LandingPage = () => {
       </p>
       <br /><br /><br /><br />
 
-  {/* Hidden file input */}
-    <input
+      {/* Hidden file input */}
+      <input
         type="file"
         accept="image/*"
         ref={fileInputRef}
@@ -129,13 +147,18 @@ const LandingPage = () => {
       />
 
       {/* Single button that opens file explorer */}
-      <button
-        style={{ backgroundColor: '#347C9B'}}
-        onClick={openFileDialog}
-      >
+      <button style={{ backgroundColor: '#347C9B'}} onClick={openFileDialog}>
         Upload Photo
       </button>
 
+      {/* Show CropModal if user is cropping */}
+      {cropping && file && (
+        <CropModal
+          file={file}
+          onSave={handleCropSave}
+          onCancel={handleCropCancel}
+        />
+      )}
     </div>
   );
 };

@@ -1,0 +1,160 @@
+.modalOverlay {
+  position: fixed;
+  /* Fill the entire viewport */
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  background-color: rgba(0,0,0,0.6);
+  z-index: 999;
+
+  /* Use flex to perfectly center content */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* The modal container itself */
+.modalContent {
+  width: 410px; 
+  max-width: 80%;
+  background: #E5BE8F;
+  border-radius: 30px;
+  padding: 1.8rem;
+  position: relative;
+  margin: 1rem;
+}
+
+/* The 'X' button: top-right, no border, no background */
+.closeButton {
+  position: absolute;
+  top: 20px;
+  right: 25px;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: block;
+  font-family: sans-serif;
+}
+
+.closeIcon {
+  width: 30px; 
+  height: 30px;
+}
+
+/* Optional hover effect for the button or icon */
+.closeButton:hover .closeIcon {
+  filter: brightness(0.8);
+}
+
+.title {
+  font-family: "Poppins", sans-serif;
+  margin-bottom: 1rem;
+}
+
+.subtitle {
+  color: #AA8B6D;
+  padding-left: 30px;
+  padding-right: 30px;
+}
+
+/* The crop area container */
+.cropContainer {
+  position: relative;
+  width: 280px;
+  height: 280px;
+  background: #333;
+  margin: 2rem auto 1rem auto; /* top/bottom/left/right spacing */
+}
+
+.controls {
+  margin: 1rem;
+  text-align: center;
+}
+
+/* Save button styling */
+.saveButton {
+  background: #347C9B;
+  border-radius: 20px;
+  color: #fff;
+  padding: 0.6rem 2.5rem;
+  margin: 2.5rem auto 0rem auto;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+  font-size: 1.2rem;
+  font-style: normal;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 180px;
+  padding-left: 2.3rem;
+}
+
+/* Hover effect */
+.saveButton:hover {
+  background-color: #2e6f8a;
+}
+
+
+.saveButton:hover {
+  background-color: #2e6f8a;
+}
+
+.saveIcon {
+  width: 1.5rem;
+  height: auto;
+  margin-right: 0.5rem;
+}
+
+/* Slider Styling */
+
+/* Target all range inputs */
+.controls input[type="range"] {
+  -webkit-appearance: none;
+  width: 40%;
+  background: transparent;
+  margin: 0 auto;
+  cursor: pointer;
+}
+
+/* The Track */
+.controls input[type="range"]::-webkit-slider-runnable-track {
+  height: 6px; 
+  background: #ccc; 
+  border-radius: 3px; 
+}
+.controls input[type="range"]::-moz-range-track {
+  height: 6px;
+  background: #ccc; 
+  border-radius: 3px;
+}
+
+/* The Thumb (the draggable circle) */
+.controls input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  height: 16px; 
+  width: 16px; 
+  background: #347C9B; 
+  border-radius: 50%;
+  margin-top: -5px; /* So it lines up with the track */
+  transition: background 0.2s;
+}
+.controls input[type="range"]::-moz-range-thumb {
+  height: 16px;
+  width: 16px;
+  background: #347C9B;
+  border-radius: 50%;
+  transition: background 0.2s;
+}
+
+/* Hover effect on the thumb */
+.controls input[type="range"]::-webkit-slider-thumb:hover {
+  background: #2e6f8a;
+}
+.controls input[type="range"]::-moz-range-thumb:hover {
+  background: #2e6f8a;
+}
+
