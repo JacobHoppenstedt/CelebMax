@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useMemo } from "react";
-import { useNavigate } from "react-router-dom"; // <-- for going back to landing
+import { useNavigate } from "react-router-dom";
 import Cropper from "react-easy-crop";
 import styles from "./cropmodal.module.css";
 
@@ -18,40 +18,51 @@ const CropModal = ({ file, onSave, onCancel }) => {
 
   const imageURL = useMemo(() => file ? URL.createObjectURL(file) : null, [file]);
 
-  const createCroppedImage = useCallback(() => {
+  const createCroppedImage = useCallback(async () => {
+    if (!croppedAreaPixels || !imageURL) return null;
+  
+    const image = await createImage(imageURL);
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
+  
+    // Set max width/height for downscaling
+    const MAX_WIDTH = 1080;
+    const MAX_HEIGHT = 1080;
+  
+    let { width, height } = croppedAreaPixels;
+  
+    // Scale down if larger than max dimensions
+    if (width > MAX_WIDTH || height > MAX_HEIGHT) {
+      const scaleFactor = Math.min(MAX_WIDTH / width, MAX_HEIGHT / height);
+      width = Math.round(width * scaleFactor);
+      height = Math.round(height * scaleFactor);
+    }
+  
+    canvas.width = width;
+    canvas.height = height;
+  
+    ctx.drawImage(
+      image,
+      croppedAreaPixels.x,
+      croppedAreaPixels.y,
+      croppedAreaPixels.width,
+      croppedAreaPixels.height,
+      0,
+      0,
+      width,
+      height
+    );
+  
     return new Promise((resolve, reject) => {
-      requestIdleCallback(async () => {
-        if (!croppedAreaPixels || !imageURL) return null;
-        const image = await createImage(imageURL);
-        const canvas = document.createElement("canvas");
-        const ctx = canvas.getContext("2d");
-  
-        const { width, height } = croppedAreaPixels;
-        canvas.width = width;
-        canvas.height = height;
-  
-        ctx.drawImage(
-          image,
-          croppedAreaPixels.x,
-          croppedAreaPixels.y,
-          croppedAreaPixels.width,
-          croppedAreaPixels.height,
-          0,
-          0,
-          width,
-          height
-        );
-  
-        canvas.toBlob((blob) => {
-          if (!blob) {
-            reject(new Error("Canvas is empty"));
-            return;
-          }
-          const fileExt = file.name.split(".").pop();
-          const croppedFile = new File([blob], `cropped.${fileExt}`, { type: blob.type });
-          resolve(croppedFile);
-        }, "image/jpeg");
-      });
+      canvas.toBlob((blob) => {
+        if (!blob) {
+          reject(new Error("Canvas is empty"));
+          return;
+        }
+        const fileExt = file.name.split(".").pop();
+        const croppedFile = new File([blob], `cropped.${fileExt}`, { type: blob.type });
+        resolve(croppedFile);
+      }, "image/jpeg", 0.85);
     });
   }, [croppedAreaPixels, imageURL, file]);
 
