@@ -114,7 +114,7 @@ func matchHandler(c *gin.Context) {
 	defer os.Remove(tempPath)
 
 	// Call Python microservice
-	result, err := uploadImage(tempPath, "http://localhost:5000/predict")
+	result, err := uploadImage(tempPath, pythonServiceURL+"/predict")
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error":   "Call to python service failed",

@@ -10,6 +10,8 @@ services:
       - "8080:8080"
     depends_on:
       - python-service
+    environment:
+      - PYTHON_SERVICE_URL=http://python-service:5000
 
   python-service:
     build:
