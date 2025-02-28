@@ -9,6 +9,7 @@ import RDJ from '../assets/robert_downey_jr.png';
 import Logo from '../assets/logo.png';
 import Star from '../assets/star.png';
 import CropModal from '../Crop_Modal_Page/CropModal';
+import { toast } from 'react-toastify';
 
 // CSS
 import styles from "./landingpage.module.css";
@@ -16,6 +17,7 @@ import styles from "./landingpage.module.css";
 const LandingPage = () => {
   const [file, setFile] = useState(null);
   const [cropping, setCropping] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const fileInputRef = useRef(null);
   const navigate = useNavigate();
 
@@ -45,35 +47,56 @@ const LandingPage = () => {
       }
     }
   
-  // Called after user saves the cropped image
-  async function handleCropSave(croppedFile) {
-    setCropping(false);
-
-    // 1) Upload the cropped image to /match
-    const formData = new FormData();
-    formData.append("image", croppedFile);
-
-    try {
-      const response = await fetch("http://localhost:8080/match", {
-        method: "POST",
-        body: formData
-      });
-
-      if (!response.ok) {
-        throw new Error(`Server error: ${response.statusText}`);
+    async function handleCropSave(croppedFile) {
+      setCropping(false);
+    
+      // Start a timer, but don’t immediately set isLoading
+      let loadingTimer = null;
+      loadingTimer = setTimeout(() => {
+        setIsLoading(true);
+      }, 100);
+    
+      const formData = new FormData();
+      formData.append("image", croppedFile);
+    
+      try {
+        const response = await fetch("http://localhost:8080/match", {
+          method: "POST",
+          body: formData
+        });
+    
+        if (!response.ok) {
+          const errorData = await response.json(); 
+          const errMsg = errorData.error || "Server error";
+          toast.error(errMsg);
+          setFile(null);
+          return;
+        }
+    
+        const data = await response.json();
+        console.log("AI Response =>", data);
+    
+        if (data.error) {
+          toast.error(data.error);
+          setFile(null);
+          return;
+        }
+    
+        // success
+        navigate("/results", { state: { userFile: croppedFile, matchData: data } });
+      } catch (error) {
+        console.error("Upload failed:", error);
+        toast.error("Failed to process image. Please try again.");
+        setFile(null);
+      } finally {
+        if (loadingTimer) {
+          clearTimeout(loadingTimer);
+        }
+        setIsLoading(false);
       }
-
-      const data = await response.json();
-      console.log("AI Response =>", data);
-
-      // 2) Navigate to /results with the final cropped file
-      navigate("/results", { state: { userFile: croppedFile, matchData: data } });
-    } catch (error) {
-      console.error("Upload failed:", error);
-      alert("Failed to process image. Please try again.");
     }
-  }
-
+    
+    
   return (
     <div>
     <header className = {styles.header}>
@@ -150,6 +173,13 @@ const LandingPage = () => {
       <button style={{ backgroundColor: '#347C9B'}} onClick={openFileDialog}>
         Upload Photo
       </button>
+
+      {isLoading && (
+        <div className={styles.loadingOverlay}>
+          <div className={styles.spinner}></div>
+          <h2>Processing your image, please wait...</h2>
+        </div>
+      )}
 
       {/* Show CropModal if user is cropping */}
       {cropping && file && (

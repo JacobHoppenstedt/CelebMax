@@ -40,12 +40,11 @@ def predict():
         # Generate embedding for the user's image using DeepFace
         faces = model.get(img)
         if not faces:
-            return jsonify({"error": "No faces detected in the image"}), 400
+            return jsonify({"error": "No faces detected in the image, please try again!"}), 400
 
         # Check if multiple faces are detected and use the first one
         if len(faces) > 1:
-            # Optionally, you could return an error or select the most confident face
-            print(f"Multiple faces detected. Using the first face.")
+            return jsonify({"error": "Multiple faces detected in the image, please try again!"}), 400
 
         user_embedding = faces[0].normed_embedding # Get the embedding
         user_embedding = np.array(user_embedding, dtype=np.float32)

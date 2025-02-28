@@ -27,3 +27,37 @@ body{
     font-family: "Poppins", sans-serif;
     margin: 0;
   }
+
+/* Loading Page */
+
+.loadingOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.8);
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Simple spinner example */
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 6px solid #ccc;
+  border-top-color: #347C9B;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1rem;
+}
+
+/* Keyframes for spinner rotation */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
