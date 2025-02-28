@@ -1,3 +1,4 @@
 python-service/Celebrity_Faces_Dataset
 *.db
 python-service/Haircut/API_KEY.py
+python-service/clustered_embeddings.npy

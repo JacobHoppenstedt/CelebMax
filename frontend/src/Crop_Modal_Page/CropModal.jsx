@@ -4,7 +4,7 @@ import Cropper from "react-easy-crop";
 import styles from "./cropmodal.module.css";
 
 import SaveIcon from "../assets/save.png";
-import CloseIcon from "../assets/close.png";
+import CloseIcon from "../assets/Close.png";
 
 const CropModal = ({ file, onSave, onCancel }) => {
   const navigate = useNavigate();
