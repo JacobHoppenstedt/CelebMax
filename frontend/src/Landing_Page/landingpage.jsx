@@ -165,6 +165,7 @@ const LandingPage = () => {
         type="file"
         accept="image/*"
         ref={fileInputRef}
+        data-testid="file-input"  // Make sure this matches the query in your test
         style={{ display: 'none' }}
         onChange={handleFileChange}
       />
