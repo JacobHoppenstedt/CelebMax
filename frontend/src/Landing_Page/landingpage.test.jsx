@@ -24,7 +24,7 @@ describe("LandingPage", () => {
         // Simulate a click event on the button
         fireEvent.click(button);
       
-        // Assert that the handleClick function was called
+        // Claim that the handleClick function was called
         expect(openFileDialog).toHaveBeenCalledTimes(0);
     });
 
@@ -42,14 +42,14 @@ describe("LandingPage", () => {
       // Find the hidden file input element
       const fileInput = screen.getByTestId("file-input");
   
-      // Spy on the click method to simulate opening the file explorer
+      // Spy on click method to simulate opening the file explorer
       const fileInputClick = vi.fn();
       fileInput.click = fileInputClick;
   
       // Simulate a click on the button to open the file input
       fireEvent.click(button);
   
-      // Assert that the click method on the file input is called (i.e., file explorer opens)
+      // Claim that the click method on the file input is called (i.e., file explorer opens)
       expect(fileInputClick).toHaveBeenCalled();
     });
 
@@ -82,7 +82,7 @@ describe("LandingPage", () => {
         const rect1 = image1.getBoundingClientRect();
         const rect2 = image2.getBoundingClientRect();
       
-        // Assert that both images have the same top position (horizontally aligned)
+        // Claim that both images have the same top position (horizontally aligned)
         expect(rect1.top).toBeCloseTo(rect2.top, 1);
     });
 });
