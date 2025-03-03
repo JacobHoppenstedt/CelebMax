@@ -6,7 +6,7 @@ import '@testing-library/jest-dom';
 import { it, vi } from "vitest";
 
 test('navigates to the Landing page when the back button is clicked', () => {
-    // Render the component inside MemoryRouter
+    // Render the component inside BrowserRouter
     render(
       <BrowserRouter initialEntries={['/']}>
         <ResultsPage />
@@ -19,7 +19,7 @@ test('navigates to the Landing page when the back button is clicked', () => {
     // Simulate a click event on the button
     fireEvent.click(button);
   
-    // Assert that the URL changed to '/about'
+    // Assert that the URL changed to '/'
     expect(window.location.pathname).toBe('/');
   });
 
@@ -31,7 +31,7 @@ test('navigates to the Landing page when the back button is clicked', () => {
     </BrowserRouter>
     );
   
-    // Check if the loading overlay is initially in the document
+    // Check if the logo is in the document
     const image = screen.getByAltText('Logo');
     expect(image).toBeInTheDocument();
 });
