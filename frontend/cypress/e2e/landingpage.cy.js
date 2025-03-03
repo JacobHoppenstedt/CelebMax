@@ -10,5 +10,3 @@ describe('Upload Button Existence Test', () => {
     cy.get('[data-testid="file-input"]').should('exist');
   });
 });
-
-

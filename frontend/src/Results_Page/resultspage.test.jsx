@@ -13,13 +13,13 @@ test('navigates to the Landing page when the back button is clicked', () => {
       </BrowserRouter>
     );
   
-    // Find the button by its text content
+    // Find the button by its text
     const button = screen.getByText('Go Back');
   
     // Simulate a click event on the button
     fireEvent.click(button);
   
-    // Assert that the URL changed to '/'
+    // Claim that the URL changed to '/'
     expect(window.location.pathname).toBe('/');
   });
 
@@ -31,7 +31,7 @@ test('navigates to the Landing page when the back button is clicked', () => {
     </BrowserRouter>
     );
   
-    // Check if the logo is in the document
+    // Check if the logo is in document
     const image = screen.getByAltText('Logo');
     expect(image).toBeInTheDocument();
 });
