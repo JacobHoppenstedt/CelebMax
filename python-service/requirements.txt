@@ -7,3 +7,5 @@ scikit-learn
 joblib
 insightface
 onnxruntime
+boto3
+botocore

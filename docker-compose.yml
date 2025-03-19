@@ -11,7 +11,7 @@ services:
     depends_on:
       - python-service
     environment:
-      - PYTHON_SERVICE_URL=http://python-service:5000
+      - PYTHON_SERVICE_URL=http://python-service:5001
 
   python-service:
     build:
@@ -19,7 +19,7 @@ services:
       dockerfile: Dockerfile
     container_name: celeb_python_service
     ports:
-      - "5000:5000"
+      - "5001:5001"
 
   frontend:
     build:

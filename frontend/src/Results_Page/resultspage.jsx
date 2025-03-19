@@ -52,7 +52,7 @@ const ResultsPage = () => {
           <h2>Matched Celebrities</h2>
           <div className={styles.celebList}>
             {topMatches.slice(0, 5).map((match, index) => {
-              const fullImageUrl = `http://localhost:5000${match.image_url}`;
+              const fullImageUrl = `http://localhost:5001${match.image_url}`;
               // Convert distance to "match%" (distance is from 0 to 1, so 1 - distance = similarity)
               const matchPercent = ((1 - match.distance) * 100).toFixed(2);
 

@@ -5,12 +5,27 @@ from scipy.spatial.distance import cosine
 import cv2
 import os
 import insightface
+import boto3
+from io import BytesIO
+import aws_credentials
+
 app = Flask(__name__)
 
 # Paths to the model and data files
 kmeans_model_file = "kmeans_model.pkl"
 clustered_output_path = "clustered_embeddings.npy"
-celebrity_dir = "Celebrity_Faces_Dataset"
+ 
+
+
+
+
+
+# Initialize Boto3 client to interact with S3
+s3_client = boto3.client('s3', 
+                         aws_access_key_id=aws_credentials.AWS_ACCESS_KEY_ID,
+                         aws_secret_access_key=aws_credentials.AWS_SECRET_ACCESS_KEY,
+                         region_name=aws_credentials.AWS_DEFAULT_REGION)
+
 
 # Load the FaceAnalysis model from InsightFace
 model = insightface.app.FaceAnalysis(name="buffalo_l", providers=['CPUExecutionProvider'])
@@ -46,19 +61,17 @@ def predict():
         if len(faces) > 1:
             return jsonify({"error": "Multiple faces detected in the image, please try again!"}), 400
 
-        user_embedding = faces[0].normed_embedding # Get the embedding
+        user_embedding = faces[0].normed_embedding  # Get the embedding
         user_embedding = np.array(user_embedding, dtype=np.float32)
         user_cluster = kmeans.predict(user_embedding.reshape(1, -1))[0]
         similarity_scores = []
+        
         for row in clustered_embeddings_with_filenames:  # Iterate through all images
             img_file, *celeb_embedding, cluster_id = row  # Extract filename, embedding, and cluster
             celeb_embedding = np.array(celeb_embedding, dtype=np.float32)  # Ensure correct dtype
     
             distance = cosine(user_embedding, celeb_embedding)  # Compute cosine similarity
             similarity_scores.append((img_file, distance))
-
-        # Calculate similarity scores (cosine distance) between the user's embedding and celebrity embeddings
-
 
         # Sort by distance and get the top 10 matches
         top_10_matches = sorted(similarity_scores, key=lambda x: x[1])[:10]
@@ -86,19 +99,23 @@ def predict():
         if os.path.exists(user_img_path):
             os.remove(user_img_path)
 
-# Endpoint to serve celebrity images
+# Endpoint to serve celebrity images from S3
 @app.route('/celebrity_images/<filename>', methods=['GET'])
 def get_celebrity_image(filename):
     try:
-        # Build the path to your file
-        path = os.path.join(celebrity_dir, filename)
+        # Fetch the celebrity image from S3 using Boto3
+        s3_object = s3_client.get_object(Bucket="celebmax", Key=filename)
+        
+        # Read the image data from S3
+        img_data = s3_object['Body'].read()
 
-        # Use Flask's send_file to return the image
-        return send_file(path, mimetype='image/jpeg')
+        # Return the image directly as a response with the correct MIME type
+        return send_file(BytesIO(img_data), mimetype='image/jpeg')
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
 if __name__ == '__main__':
     # Run the Flask app
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port=5001)
+

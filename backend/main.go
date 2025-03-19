@@ -17,7 +17,7 @@ func main() {
 	// 1. Read the PYTHON_SERVICE_URL from environment or default to localhost
 	pythonServiceURL = os.Getenv("PYTHON_SERVICE_URL")
 	if pythonServiceURL == "" {
-		pythonServiceURL = "http://localhost:5000" // fallback for local dev
+		pythonServiceURL = "http://localhost:5001" // fallback for local dev
 	}
 	// 1. Open DB
 	db, err := gorm.Open(sqlite.Open("myapp.db"), &gorm.Config{})
