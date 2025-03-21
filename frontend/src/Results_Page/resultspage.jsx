@@ -67,7 +67,14 @@ const ResultsPage = () => {
                     alt={`Celebrity ${index}`}
                     className={styles.celebImg}
                   />
-                  {/* <p className={styles.celebName}>{match.image}</p> */}
+                  <p className={styles.celebName}>
+                    {match.image_url
+                      .split('/')
+                      .pop()
+                      .replace(/\.[^/.]+$/, '') // Remove file extension
+                      .replace(/_/g, ' ')       // Replace underscores with spaces
+                      .replace(/\b\w/g, c => c.toUpperCase())} {/* Capitalize each word */}
+                  </p>
                   <p className={styles.celebMatch}>{matchPercent}% match</p>
                 </div>
               );

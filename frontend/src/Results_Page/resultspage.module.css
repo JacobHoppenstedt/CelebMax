@@ -69,8 +69,8 @@ body{
 }
 
 .yourPicture {
-  width: 130px;
-  height: 130px; 
+  width: 120px;
+  height: 120px; 
   object-fit: cover;
   border-radius: 16px;
   margin-top: 1rem;
@@ -115,7 +115,7 @@ body{
 }
 
 .celebImg {
-  width: 115px; /* Downsized width */
+  width: 100px; /* Downsized width */
   height: auto; /* Height adjusts automatically to maintain aspect ratio */
   aspect-ratio: 178 / 218; /* Ensures correct scaling */
   object-fit: cover; /* Maintains aspect ratio and fills the space */
