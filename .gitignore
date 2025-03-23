@@ -4,3 +4,4 @@ python-service/Haircut/API_KEY.py
 python-service/clustered_embeddings.npy
 python-service/aws_credentials.py
 python-service/kmeans_model.pkl
+python-service/__pycache__/aws_credentials.cpython-312.pyc

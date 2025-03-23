@@ -8,4 +8,12 @@ export default defineConfig({
     globals: true,          // This is important to use "expect" globally
     environment: 'jsdom',   // Use jsdom for browser-like testing
   },
+  server: {
+    watch: {
+      usePolling: true,
+      interval: 100,
+    },
+    host: true,
+    port: 3000,
+  },
 });
