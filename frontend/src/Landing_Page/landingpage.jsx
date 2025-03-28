@@ -129,12 +129,17 @@ const LandingPage = () => {
     <ruleSection1 className = {styles.ruleSection1}>
       <br/>
       {/* First rule and first two images */}
-      <motion.img style={{ width: "110px", height: "130px", float: "left", marginLeft: "40px" }} src={Timothee} alt="Celeb1" initial={{ opacity: 0 }} animate={{ opacity: 1}} transition={{ duration: 2 }}/>
+      <motion.img style={{ width: "110px", height: "130px", float: "left", marginLeft: "40px" }} src={Timothee} alt="Celeb1" initial={{ opacity: 0 }} animate={{ opacity: 1}} transition={{ delay: .5, duration: 2 }}/>
       <motion.img style={{ width: "110px", height: "130px", float: "right", marginRight: "40px" }} src={Brad} alt="Celeb2" initial={{ opacity: 0 }} animate={{ opacity: 1}} transition={{ delay: 1, duration: 2 }}/>
       <br/><br />
-      <p className={styles.ruleSection}>
+      <motion.p className={styles.ruleSection}
+        initial={{ opacity: 0}}
+        animate={{ opacity: 1}}
+        transition={{ duration: 2 }}
+      >
+
         1. Upload a picture of yourself, and our AI will instantly find celebrities who resemble you.
-      </p>
+      </motion.p>
       <br />
 
     </ruleSection1>
@@ -142,22 +147,28 @@ const LandingPage = () => {
     <ruleSection2 className = {styles.ruleSection2}>
     {/* Second rule and second two images */}
       <motion.img style={{ width: "120px", height: "140px", float: "left", marginTop: "60px", marginLeft: "-60px" }} src={Zendaya} alt="Celeb3" initial={{ opacity: 0 }} animate={{ opacity: 1}} transition={{ delay: 2, duration: 2 }}/>
-      <motion.img style={{ width: "120px", height: "140px", float: "right", marginTop: "60px", marginRight: "-60px" }} src={Taylor} alt="Celeb4" initial={{ opacity: 0 }} animate={{ opacity: 1}} transition={{ delay: 3, duration: 2 }}/>
+      <motion.img style={{ width: "120px", height: "140px", float: "right", marginTop: "60px", marginRight: "-60px" }} src={Taylor} alt="Celeb4" initial={{ opacity: 0 }} animate={{ opacity: 1}} transition={{ delay: 2.5, duration: 2 }}/>
       <br/><br />
-      <p className={styles.ruleSection}>
+      <motion.p className={styles.ruleSection}
+        initial={{ opacity: 0}}
+        animate={{ opacity: 1}}
+        transition={{ delay: 1.5, duration: 2 }}>
         2. Browse through the results and choose a celebrity whose hairstyle you'd like to try.
-      </p>
+      </motion.p>
       <br />
 
     </ruleSection2>
 
     {/* Third rule and last two images */}
-      <motion.img style={{ width: "110px", height: "130px", float: "left", marginTop: "130px", marginLeft: "-40px"}} src={TheRock} alt="Celeb5" initial={{ opacity: 0 }} animate={{ opacity: 1}} transition={{ delay: 4, duration: 2 }}/>
-      <motion.img style={{ width: "110px", height: "130px", float: "right", marginTop: "130px", marginRight: "-40px" }} src={RDJ} alt="Celeb6" initial={{ opacity: 0 }} animate={{ opacity: 1}} transition={{ delay: 5, duration: 2 }}/>
+      <motion.img style={{ width: "110px", height: "130px", float: "left", marginTop: "130px", marginLeft: "-40px"}} src={TheRock} alt="Celeb5" initial={{ opacity: 0 }} animate={{ opacity: 1}} transition={{ delay: 3.5, duration: 2 }}/>
+      <motion.img style={{ width: "110px", height: "130px", float: "right", marginTop: "130px", marginRight: "-40px" }} src={RDJ} alt="Celeb6" initial={{ opacity: 0 }} animate={{ opacity: 1}} transition={{ delay: 4, duration: 2 }}/>
       <br/><br />
-      <p className={styles.ruleSection}>
+      <motion.p className={styles.ruleSection}
+        initial={{ opacity: 0}}
+        animate={{ opacity: 1}}
+        transition={{ delay: 3, duration: 2 }}>
         3. Use our AI-powered tool to replace your hairstyle with your selected celebrity’s look and see the transformation!
-      </p>
+      </motion.p>
       <br /><br /><br /><br />
 
       {/* Hidden file input */}
