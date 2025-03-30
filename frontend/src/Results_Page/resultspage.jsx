@@ -23,6 +23,16 @@ const ResultsPage = () => {
     navigate("/");
   }
 
+  function handleGoToHairstyles() {
+    navigate("/hairstyle_customizer", {
+      state: { 
+        userFile,
+        userImageUrl,
+        matchData
+      },
+    });
+  }
+
   return (
     <div className={styles.resultsPage}>
       {/* Header */}
@@ -81,7 +91,7 @@ const ResultsPage = () => {
             })}
           </div>
 
-          <button className={styles.hairstylesButton}>
+          <button className={styles.hairstylesButton} onClick={handleGoToHairstyles}>
             <img src={HairCut} alt="" className={styles.hairicon} />
             Try A Celebrity's Hairstyle
           </button>
