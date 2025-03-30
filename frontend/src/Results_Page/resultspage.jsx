@@ -22,7 +22,10 @@ const ResultsPage = () => {
   function handleGoBack() {
     navigate("/");
   }
-
+  function handleNameClick(celebName) {
+    // Navigate to /celeb-search route, passing the celebName
+    navigate("/celeb-search", { state: { celebName } });
+  }
   return (
     <div className={styles.resultsPage}>
       {/* Header */}
@@ -56,25 +59,29 @@ const ResultsPage = () => {
               // Convert distance to "match%" (distance is from 0 to 1, so 1 - distance = similarity)
               const matchPercent = ((1 - match.distance) * 100).toFixed(2);
 
+              // Derive display name from filename
+              const rawName = match.image_url
+                .split('/')
+                .pop()
+                .replace(/\.[^/.]+$/, '')   // Remove file extension
+                .replace(/_/g, ' ');       // Replace underscores
+              const displayName = rawName.replace(/\b\w/g, c => c.toUpperCase());
+
               return (
                 <div className={styles.celebCard} key={index}>
-                  {/* Numbered Circle */}
                   <div className={styles.celebNumber}>{index + 1}</div>
-
-                  {/* Celebrity Image */}
                   <img
                     src={fullImageUrl}
                     alt={`Celebrity ${index}`}
                     className={styles.celebImg}
                   />
-                  <p className={styles.celebName}>
-                    {match.image_url
-                      .split('/')
-                      .pop()
-                      .replace(/\.[^/.]+$/, '') // Remove file extension
-                      .replace(/_/g, ' ')       // Replace underscores with spaces
-                      .replace(/\b\w/g, c => c.toUpperCase())} {/* Capitalize each word */}
-                  </p>
+                  {/* Name as clickable text */}
+                  <button
+                    className={styles.celebNameButton}
+                    onClick={() => handleNameClick(displayName)}
+                  >
+                    {displayName}
+                  </button>
                   <p className={styles.celebMatch}>{matchPercent}% match</p>
                 </div>
               );

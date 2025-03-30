@@ -1,0 +1,80 @@
+body {
+    box-sizing: border-box;
+    background-color: #C0A582;
+    background-image: url("../assets/background.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    margin: 0;
+    padding: 0;
+    font-family: Poppins, sans-serif; 
+  }
+  
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.4rem;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
+  .logo {
+    height: 4.5rem;
+  }
+  
+  .title {
+    font-family: "OceanTrace", sans-serif;
+    font-size: 2.3rem;
+    color: #347C9B;
+    margin: 0;
+  }
+  
+  .goBackButton {
+    border-radius: 22px;
+    background: #AA8B6D;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem 1.2rem;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+  }
+  
+  .goBackButton:hover {
+    background: #9b7f64;
+  }
+  
+  .backicon {
+    width: 1.2rem;
+    margin-right: 0.5rem;
+  }
+  
+  .searchPage {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 2rem;
+    box-sizing: border-box;
+  }
+  
+  .searchContainer {
+    width: 90%;
+    max-width: 1000px;
+    margin: 1rem auto;
+    text-align: center;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 1rem;
+  }
+  
+
+  .searchHeading {
+    font-size: 1.8rem;
+    color: #347C9B;
+    margin-bottom: 1.2rem;
+  }
+  
+  
