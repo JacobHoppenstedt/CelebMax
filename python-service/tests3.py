@@ -53,5 +53,5 @@ def fetch_image_from_s3(filename):
 
 if __name__ == '__main__':
     # Test the /predict route with a sample image
-    test_image_path = '/Users/veerajtalasani/Documents/Documents - Veeraj’s MacBook Air - 1/Software  Engineering/testing/CelebMax/test/jacobimage.jpg'  # Change this to your test image file path
+    test_image_path = '/Users/veerajtalasani/Desktop/50_Cent.png'  # Change this to your test image file path
     test_predict(test_image_path)
