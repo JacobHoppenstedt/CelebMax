@@ -33,15 +33,15 @@
 
 _(can be found in `landingpage.test.jsx`, `resultspage.test.jsx`, and `hairstyle_customizer.test.jsx`)_
 
-- **Landing Page:**
+### **Landing Page:**
 - Framer motion fade animation works on celebrity image
 - Framer motion fade animation works on line of text
 
-- **Results Page:**
+### **Results Page:**
 - Framer motion fade animation works on user uploaded picture
 - Button labeled "Try A Celebrity's Hairstyle appropriately navigates to Hairstyle Customizer page upon click
 
-- **Hairstle Customizer Page:**
+### **Hairstle Customizer Page:**
 - Logo image appears on the page
 - "Go Back" button appropriately navigates back to results page upon click
 
