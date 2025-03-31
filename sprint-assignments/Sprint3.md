@@ -1,6 +1,6 @@
 # Sprint 3 Overview
 
-### 🖥️ Front-End Work Completed
+## Front-End Work Completed
 
 - **Designed the Hairstyle Switcher page on Figma**  
   Created a layout prototype for the hairstyle switcher feature, outlining user flow and visual design. Focus was placed on usability, intuitive navigation, and clearly distinguishing the original and modified image sections.
@@ -23,6 +23,23 @@
 - **Created Celebrity Search Page**  
   Implemented a new page that takes a selected celebrity's name and generates a clickable link to a Google Image search. This offers users a quick way to explore more pictures of the celebrity they matched with for styling inspiration.
 
+### Frontend React Vite Unit Tests and Cypress Tests
+
+_(can be found in `landingpage.test.jsx`, `resultspage.test.jsx`, and `hairstyle_customizer.test.jsx`)_
+
+**Landing Page:**
+- Framer motion fade animation works on celebrity image
+- Framer motion fade animation works on line of text
+
+**Results Page:**
+- Framer motion fade animation works on user uploaded picture
+- Button labeled "Try A Celebrity's Hairstyle appropriately navigates to Hairstyle Customizer page upon click
+
+**Hairstle Customizer Page:**
+- Logo image appears on the page
+- "Go Back" button appropriately navigates back to results page upon click
+
+
 ## Backend Work Completed
 - **Go Backend Enhancements**
   Refactored Go services to improve modularity and maintainability Optimized database queries to reduce response times and improve   efficiency.Implemented structured logging for better debugging and monitoring.Improved error handling with detailed responses for various failure cases.
@@ -33,32 +50,19 @@
 - **Integrated Amazon S3 for Image Storage**
   Implemented S3 buckets for storing and managing the large collection of celebrity hairstyle images. This solution ensures better scalability and availability for images used in the application.Set up S3 buckets with appropriate permissions to allow backend access for image uploads and retrieval.Integrated the backend services to directly upload and fetch images from S3 during the image processing workflow.
 
-- **Go Unit Tests**
-  Wrote unit tests for sign-in and sign-up functionality.
-  Sign-Up Test: Validated that new user registration correctly handles various scenarios, including valid and invalid input (e.g., missing fields, existing usernames).
-  Sign-In Test: Ensured that the sign-in process correctly authenticates users, handles incorrect credentials, and checks for empty or invalid inputs.
-  Ensured proper handling of edge cases and error conditions in user authentication.
-  Increased code coverage to improve the reliability of user-related operations.
+### Backend Unit Tests With Go and Python
+**Go Unit Tests**
+  - Wrote unit tests for sign-in and sign-up functionality.
+  - Sign-Up Test: Validated that new user registration correctly handles various scenarios, including valid and invalid input (e.g., missing fields, existing usernames).
+  - Sign-In Test: Ensured that the sign-in process correctly authenticates users, handles incorrect credentials, and checks for empty or invalid inputs.
+  - Ensured proper handling of edge cases and error conditions in user authentication.
+  - Increased code coverage to improve the reliability of user-related operations.
 
 
-- **Python Service Unit Tests**
-  Wrote unit tests for data transformation functions and image processing logic.Validated correct handling of input variations and boundary conditions.Improved test execution speed with mock data and caching mechanisms.
-  S3 Integration Test: Wrote a unit test that calls the S3 bucket, retrieves the images, and ensures the correct output is returned. This test simulates real-world scenarios where the application fetches images from the cloud and processes them, validating that the connection to S3 works correctly and that data is handled without errors.
-
-## Frontend React Vite Unit Tests and Cypress Tests
-
-_(can be found in `landingpage.test.jsx`, `resultspage.test.jsx`, and `hairstyle_customizer.test.jsx`)_
-
-### **Landing Page:**
-- Framer motion fade animation works on celebrity image
-- Framer motion fade animation works on line of text
-
-### **Results Page:**
-- Framer motion fade animation works on user uploaded picture
-- Button labeled "Try A Celebrity's Hairstyle appropriately navigates to Hairstyle Customizer page upon click
-
-### **Hairstle Customizer Page:**
-- Logo image appears on the page
-- "Go Back" button appropriately navigates back to results page upon click
+**Python Service Unit Tests**
+  - Wrote unit tests for data transformation functions and image processing logic.
+  - Validated correct handling of input variations and boundary conditions.
+  - Improved test execution speed with mock data and caching mechanisms.
+  - S3 Integration Test: Wrote a unit test that calls the S3 bucket, retrieves the images, and ensures the correct output is returned. This test simulates real-world scenarios where the application fetches images from the cloud and processes them, validating that the connection to S3 works correctly and that data is handled without errors.
 
 
