@@ -74,7 +74,7 @@ PYTHON_SERVICE_URL=http://localhost:5001
 ```
 ## Setting Up External Files
 
-The python-service requires several large external files (e.g., pre-trained model weights and parts of the 25,000 celebrity dataset). These files are not included in the repository to keep the repository lightweight.
+The project requires several large external files (e.g., pre-trained model weights and parts of the 25,000 celebrity dataset). These files are not included in the repository to keep the repository lightweight.
 
 ### To set up these files:
 
@@ -99,7 +99,9 @@ celebmax/
 ├── backend/
 └── docker-compose.yml
 ```
-
+### Set up Fal.AI and AWS API Keys
+- Obtain Fal.ai API key, create `API_KEY.py` file and place inside `python-service/Haircut` folder.
+- Obtain AWS key and update values inside the `aws_credentials.py`
 ## Docker Compose Setup
 
 A `docker-compose.yml` file is provided in the root of the project to orchestrate the Go backend and the python-service.
