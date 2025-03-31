@@ -6,6 +6,7 @@ import Logo from "../assets/logo.png";
 import Back from "../assets/Back.png";
 import HairCut from "../assets/Barbershop.png"
 import TimotheeChalamet from "../assets/timothee_chalamet.png";
+import { motion } from 'framer-motion';
 
 const ResultsPage = () => {
   const navigate = useNavigate();
@@ -24,8 +25,25 @@ const ResultsPage = () => {
   }
   function handleNameClick(celebName) {
     // Navigate to /celeb-search route, passing the celebName
-    navigate("/celeb-search", { state: { celebName } });
+    navigate("/celeb-search", { 
+      state: { 
+        celebName,
+        matchData,
+        topMatches,
+        userFile 
+      } 
+    });
   }
+  function handleGoToHairstyles() {
+    navigate("/hairstyle_customizer", {
+      state: { 
+        userFile,
+        userImageUrl,
+        matchData
+      },
+    });
+  }
+
   return (
     <div className={styles.resultsPage}>
       {/* Header */}
@@ -43,10 +61,13 @@ const ResultsPage = () => {
         {/* "Your Picture" */}
         <div className={styles.yourPictureSection}>
           <h2>Your Picture</h2>
-          <img
+          <motion.img
             src={userImageUrl || TimotheeChalamet}
             alt="Your Picture"
             className={styles.yourPicture}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1}}
+            transition={{ duration: 2 }}
           />
         </div>
 
@@ -70,10 +91,13 @@ const ResultsPage = () => {
               return (
                 <div className={styles.celebCard} key={index}>
                   <div className={styles.celebNumber}>{index + 1}</div>
-                  <img
+                  <motion.img
                     src={fullImageUrl}
                     alt={`Celebrity ${index}`}
                     className={styles.celebImg}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1}}
+                    transition={{ delay: 1, duration: 2 }}
                   />
                   {/* Name as clickable text */}
                   <button
@@ -88,7 +112,7 @@ const ResultsPage = () => {
             })}
           </div>
 
-          <button className={styles.hairstylesButton}>
+          <button className={styles.hairstylesButton} onClick={handleGoToHairstyles}>
             <img src={HairCut} alt="" className={styles.hairicon} />
             Try A Celebrity's Hairstyle
           </button>
