@@ -28,3 +28,21 @@
 ## Go Unit Tests
 
 ## Python Service Unit Tests
+
+## Frontend React Vite Unit Tests and Cypress Tests
+
+_(can be found in `landingpage.test.jsx`, `resultspage.test.jsx`, and `hairstyle_customizer.test.jsx`)_
+
+- **Landing Page:**
+- Framer motion fade animation works on celebrity image
+- Framer motion fade animation works on line of text
+
+- **Results Page:**
+- Framer motion fade animation works on user uploaded picture
+- Button labeled "Try A Celebrity's Hairstyle appropriately navigates to Hairstyle Customizer page upon click
+
+- **Hairstle Customizer Page:**
+- Logo image appears on the page
+- "Go Back" button appropriately navigates back to results page upon click
+
+
