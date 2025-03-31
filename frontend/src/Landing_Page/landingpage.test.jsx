@@ -1,5 +1,5 @@
 import React from "react";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import LandingPage from "./landingpage";
 import { BrowserRouter } from 'react-router-dom'; 
 import '@testing-library/jest-dom';
@@ -85,4 +85,41 @@ describe("LandingPage", () => {
         // Claim that both images have the same top position (horizontally aligned)
         expect(rect1.top).toBeCloseTo(rect2.top, 1);
     });
+
+    test('it applies Framer Motion animation to the image', async () => {
+        // Render the component
+        render(
+            <BrowserRouter>
+                <LandingPage />
+            </BrowserRouter>
+            );
+      
+        // Find the image element
+        const imageElement = screen.getByAltText(/Celeb1/i)
+      
+        // Initially check that the opacity is 0
+        expect(imageElement).toHaveStyle('opacity: 0')
+      
+        // Wait for the animation to finish (checking opacity change to 1)
+        await waitFor(() => expect(imageElement).toHaveStyle('opacity: 1'), { timeout: 3000 })
+
+      })
+
+      test('it applies Framer Motion animation to the text', async () => {
+        // Render the component
+        render(
+            <BrowserRouter>
+                <LandingPage />
+            </BrowserRouter>
+            );
+      
+        // Find the text element
+        const textElement = screen.getByText(/1. Upload a picture of yourself, and our AI will instantly find celebrities who resemble you./i)
+      
+        // Initially check that the opacity is 0
+        expect(textElement).toHaveStyle('opacity: 0')
+      
+        // Wait for the animation to complete (checking opacity change to 1)
+        await waitFor(() => expect(textElement).toHaveStyle('opacity: 1'), { timeout: 3000 })
+      })
 });
