@@ -24,7 +24,14 @@ const ResultsPage = () => {
   }
   function handleNameClick(celebName) {
     // Navigate to /celeb-search route, passing the celebName
-    navigate("/celeb-search", { state: { celebName } });
+    navigate("/celeb-search", { 
+      state: { 
+        celebName,
+        matchData,
+        topMatches,
+        userFile 
+      } 
+    });
   }
   function handleGoToHairstyles() {
     navigate("/hairstyle_customizer", {
