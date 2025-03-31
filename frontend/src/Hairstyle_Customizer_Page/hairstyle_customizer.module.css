@@ -79,11 +79,12 @@
     margin: 10px 40px;
   }
 
+
 /* 
 * Container: “Your Original Picture” + arrow + “Modified Hairstyle”
 */
 
-/* Left large rounded div */
+
 .modifiedHairstyleDiv {
     flex: 1;
     border-radius: 24px;
@@ -172,11 +173,11 @@
     display: grid;
     grid-template-columns: repeat(2, 120px); /* each column is 120px */
     grid-template-rows: repeat(2, 165px);
-    column-gap: 0.5rem;                      /* or 0.2rem, etc. */
-    justify-content: center;                 /* center the 2 columns in container */
+    column-gap: 0.5rem;
+    justify-content: center;
     justify-items: center;
     overflow-y: auto;
-    padding-top: 1.5rem;  /* Enough space so circle isn't clipped */
+    padding-top: 1.5rem
   }
   
   /* OPTIONAL: you can keep or remove your custom scrollbar styling */

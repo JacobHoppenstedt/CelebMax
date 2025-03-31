@@ -10,6 +10,10 @@ const CelebSearchPage = () => {
   const { state } = useLocation();
   const celebName = state?.celebName || "Unknown Celebrity";
 
+  const userFile = state?.userFile;
+  const userImageUrl =
+    state?.userImageUrl || (userFile ? URL.createObjectURL(userFile) : null);
+  const matchData = state?.matchData;
   const searchQuery = celebName.replace(/\s+/g, "+") + "+photos";
   const googleUrl = `https://www.google.com/search?q=${searchQuery}&tbm=isch`;
 
@@ -18,13 +22,22 @@ const CelebSearchPage = () => {
     window.open(googleUrl, "_blank");
   };
 
+  const handleGoBack = () => {
+    navigate("/results", {
+      state: {
+        matchData,
+        userFile,
+      },
+    });
+  };
+
   return (
     <div className={styles.searchPage}>
       {/* Header */}
       <header className={styles.header}>
         <img src={Logo} alt="Logo" className={styles.logo} />
         <h1 className={styles.title}>Celebrity Search</h1>
-        <button className={styles.goBackButton} onClick={() => navigate(-1)}>
+        <button className={styles.goBackButton} onClick={handleGoBack}>
           <img src={Back} alt="Back" className={styles.backicon} />
           Go Back
         </button>
