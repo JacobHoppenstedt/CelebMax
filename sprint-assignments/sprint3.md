@@ -23,7 +23,6 @@
 - **Created Celebrity Search Page**  
   Implemented a new page that takes a selected celebrity's name and generates a clickable link to a Google Image search. This offers users a quick way to explore more pictures of the celebrity they matched with for styling inspiration.
 
-
 ## Backend Work Completed
 
 ## Go Unit Tests
