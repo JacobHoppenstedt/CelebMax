@@ -84,8 +84,8 @@ const ResultsPage = () => {
               const rawName = match.image_url
                 .split('/')
                 .pop()
-                .replace(/\.[^/.]+$/, '')   // Remove file extension
-                .replace(/_/g, ' ');       // Replace underscores
+                .replace(/\.[^/.]+$/, '')
+                .replace(/_/g, ' ');
               const displayName = rawName.replace(/\b\w/g, c => c.toUpperCase());
 
               return (
@@ -100,12 +100,16 @@ const ResultsPage = () => {
                     transition={{ delay: 1, duration: 2 }}
                   />
                   {/* Name as clickable text */}
-                  <button
-                    className={styles.celebNameButton}
-                    onClick={() => handleNameClick(displayName)}
+                  <a
+                    href="#"
+                    className={styles.celebNameLink}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleNameClick(displayName);
+                    }}
                   >
                     {displayName}
-                  </button>
+                  </a>
                   <p className={styles.celebMatch}>{matchPercent}% match</p>
                 </div>
               );

@@ -131,9 +131,25 @@ body{
 }
 
 .celebMatch {
-  font-size: 0.9rem;
-  color: #555;
+  font-size: 0.8rem;
+  color: #347C9B;
   margin-top: 0.2rem;
+}
+
+.celebNameLink {
+  /* Example basic hyperlink styling */
+  color: #E8E8E8;
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: 1rem;
+  border: none;
+  background: none;
+  padding: 0;
+  margin: 0.2rem 0 0 0;
+}
+
+.celebNameLink:hover {
+  color: #c2c2c2;
 }
 
 .hairstylesButton {
