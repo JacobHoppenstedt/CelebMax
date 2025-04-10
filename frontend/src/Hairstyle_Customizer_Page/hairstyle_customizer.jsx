@@ -16,6 +16,7 @@ const HairstyleCustomizer = () => {
   const userImageUrl =
     state?.userImageUrl || (userFile ? URL.createObjectURL(userFile) : null);
   const matchData = state?.matchData;
+  const currentPage = state?.currentPage;
 
   // Go back to the Results page
   function handleGoBack() {
@@ -23,6 +24,7 @@ const HairstyleCustomizer = () => {
       state: {
         userFile,
         matchData,
+        currentPage,
       }
     });
   }

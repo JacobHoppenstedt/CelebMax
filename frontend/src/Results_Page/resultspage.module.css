@@ -27,14 +27,14 @@ body{
 
 /* Logo on the far left */
 .logo {
-    height: 4.5rem;
+    height: 4rem;
 
 }
 
 /* Title in the center */
 .title {
   font-family: "OceanTrace", sans-serif;
-  font-size: 2.3rem;
+  font-size: 2.1rem;
   color: #347C9B;
   margin: 0;
 }
@@ -64,7 +64,7 @@ body{
 
 /***** "Your Picture" Section *****/
 .yourPictureSection {
-  margin-top: 1rem;
+  margin-top: 0.5rem;
   margin-bottom: 1.6rem;
 }
 
@@ -100,9 +100,9 @@ body{
 
 .celebNumber {
   position: absolute;
-  top: -12px; /* Moves the number above the image */
-  left: -12px; /* Moves the number to the left, outside the image */
-  background: #AA8B6D; /* Circle color */
+  top: -12px;
+  left: -12px;
+  background: #AA8B6D;
   color: white;
   font-size: 1.2rem;
   width: 40px;
@@ -115,19 +115,13 @@ body{
 }
 
 .celebImg {
-  width: 100px; /* Downsized width */
-  height: auto; /* Height adjusts automatically to maintain aspect ratio */
-  aspect-ratio: 178 / 218; /* Ensures correct scaling */
-  object-fit: cover; /* Maintains aspect ratio and fills the space */
+  width: 110px;
+  height: auto;
+  aspect-ratio: 200 / 220;
+  object-fit: cover;
   border-radius: 16px;
   margin-bottom: 0.5rem;
   border: 5px solid #AA8B6D;
-}
-
-
-.celebName {
-  font-weight: 600; 
-  margin: 0;
 }
 
 .celebMatch {
@@ -137,7 +131,6 @@ body{
 }
 
 .celebNameLink {
-  /* Example basic hyperlink styling */
   color: #E8E8E8;
   text-decoration: underline;
   cursor: pointer;
@@ -146,6 +139,14 @@ body{
   background: none;
   padding: 0;
   margin: 0.2rem 0 0 0;
+
+  /* Force single line with ellipsis if it's too long */
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 150px;
+  text-align: center;
 }
 
 .celebNameLink:hover {
@@ -153,8 +154,13 @@ body{
 }
 
 .hairstylesButton {
-  font-size: 1.2rem;
-  margin-top: 2.5rem;
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+
+  font-size: 1rem;
   border-radius: 50px;
   background: #347C9B;
   display: flex;
@@ -166,14 +172,65 @@ body{
   cursor: pointer;
   text-align: center;
   width: fit-content;
-  margin: 2.5rem auto; /* Centers the button horizontally */
 }
 
+
 .hairicon {
-  width: 1.3rem;
+  width: 1.2rem;
   margin-right: 0.5rem;
 }
 
 .hairstylesButton:hover {
   background: #2e6f8a;
+}
+
+/* Carousel */
+
+.carouselWrapper {
+  position: relative;
+  display: flex;  
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-top: 1.4rem; /* same margin you used earlier for the list */
+}
+
+/* The arrows themselves */
+.arrowButton {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 2;
+}
+
+/* Left arrow sits 2rem from the left side */
+.arrowButtonLeft {
+  left: 2rem;
+}
+
+/* Right arrow sits 2rem from the right side */
+.arrowButtonRight {
+  right: 2rem;
+}
+
+.arrowButton img {
+  width: 2.5rem;
+  height: auto;
+  transition: transform 0.2s ease;
+}
+
+/* If the arrow isn't disabled, show a hover effect */
+.arrowButton:not(.disabledArrow):hover img {
+  transform: scale(1.2);
+}
+
+/* When the button is disabled, show lower opacity and no pointer events */
+.disabledArrow {
+  opacity: 0.4;
+  cursor: default;
+  pointer-events: none;
 }

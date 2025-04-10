@@ -32,23 +32,27 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0.4rem 1rem;
+    padding: 0.4rem;
     width: 100%;
+    z-index: 1000;
     box-sizing: border-box;
   }
   
+  /* Logo on the far left */
   .logo {
-    height: 4.5rem;
+      height: 4rem;
+  
   }
   
+  /* Title in the center */
   .title {
     font-family: "OceanTrace", sans-serif;
-    font-size: 2.3rem;
+    font-size: 2.1rem;
     color: #347C9B;
     margin: 0;
   }
   
-  /* Go Back button on the far right */
+  /* Button on the far right */
   .goBackButton {
     border-radius: 22px;
     background: #AA8B6D;
@@ -57,6 +61,7 @@
     padding: 0.5rem 1.2rem;
     font-size: 1rem;
   
+    /* Center contents vertically in case the icon is tall */
     display: flex;
     align-items: center;
   }
