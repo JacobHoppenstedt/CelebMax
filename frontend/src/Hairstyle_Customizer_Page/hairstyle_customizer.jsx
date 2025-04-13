@@ -1,11 +1,10 @@
-import React from "react";
+import React, {useState} from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import styles from "./hairstyle_customizer.module.css";
 
 import Logo from "../assets/logo.png";
 import Back from "../assets/Back.png";
 import ArrowDown from "../assets/Arrow.png";
-import TaylorSwift from "../assets/taylor_swift.png";
 
 const HairstyleCustomizer = () => {
   const navigate = useNavigate();
@@ -18,6 +17,12 @@ const HairstyleCustomizer = () => {
   const matchData = state?.matchData;
   const currentPage = state?.currentPage;
 
+  const topMatches = matchData?.top_matches || [];
+  const topTenCelebs = topMatches.slice(0, 10);
+
+  // Track which celeb is selected (store the index)
+  const [selectedCelebIndex, setSelectedCelebIndex] = useState(null);
+
   // Go back to the Results page
   function handleGoBack() {
     navigate("/results", {
@@ -28,12 +33,6 @@ const HairstyleCustomizer = () => {
       }
     });
   }
-
-  const dummyCelebs = Array.from({ length: 6 }, (_, i) => ({
-    id: i + 1,
-    name: "Taylor Swift",
-    image: TaylorSwift,
-  }));
 
   return (
     <div className={styles.hairstyleCustomizer}>
@@ -50,39 +49,34 @@ const HairstyleCustomizer = () => {
       {/* Content with two large rounded divs */}
       <div className={styles.content}>
         <div className={styles.modifiedHairstyleDiv}>
-          <div className={styles.transformationContainer}>
-            
-            {/* "Your Original Picture" section */}
-            <div className={styles.section}>
-              <h2 className={styles.sectionTitle}>Your Original Picture</h2>
-              {userImageUrl && (
-                <img
-                  src={userImageUrl}
-                  alt="Original"
-                  className={styles.userPicture}
-                />
-              )}
-            </div>
+          {/* "Your Original Picture" section */}
+          <div className={styles.section}>
+            <h2 className={styles.sectionTitle}>Your Original Picture</h2>
+            {userImageUrl && (
+              <img
+                src={userImageUrl}
+                alt="Original"
+                className={styles.userOriginalPicture}
+              />
+            )}
+          </div>
 
-            <div className={styles.arrow}>
-                <img src={ArrowDown} alt="Arrow" className={styles.arrowIcon} />
-            </div>
+          <div className={styles.arrow}>
+            <img src={ArrowDown} alt="Arrow" className={styles.arrowIcon} />
+          </div>
 
-            {/* "Modified Hairstyle" section (currently same image) */}
-            <div className={styles.section}>
-              <h2 className={styles.sectionTitle}>Modified Hairstyle</h2>
-              {userImageUrl && (
-                <img
-                  src={userImageUrl}
-                  alt="Modified"
-                  className={styles.userPicture}
-                />
-              )}
-            </div>
-
+          {/* "Modified Hairstyle" section (currently same image) */}
+          <div className={styles.section}>
+            <h2 className={styles.sectionTitle}>Modified Hairstyle</h2>
+            {userImageUrl && (
+              <img
+                src={userImageUrl}
+                alt="Modified"
+                className={styles.userModifiedPicture}
+              />
+            )}
           </div>
         </div>
-
 
         {/* ---------- Right Div: Choose Celebrity Div ---------- */}
         <div className={styles.chooseCelebrityDiv}>
@@ -94,23 +88,49 @@ const HairstyleCustomizer = () => {
 
           {/* Scrollable container of celebrity cards */}
           <div className={styles.celebScrollContainer}>
-            {dummyCelebs.map((celeb, index) => (
-              <div
-                key={celeb.id}
-                className={styles.celebCard}
-                onClick={() => {
-                  // TODO: handle the "apply hairstyle" logic
-                  console.log(`Clicked on celeb #${celeb.id}`);
-                }}
-              >
-                <div className={styles.celebNumber}>{index + 1}</div>
-                <img
-                  src={celeb.image}
-                  alt={celeb.name}
-                  className={styles.celebImg}
-                />
-              </div>
-            ))}
+            {topTenCelebs.map((match, index) => {
+              // Same logic you used in the results page to build the image URL
+              const fullImageUrl = `http://localhost:5001${match.image_url}`;
+
+              // Derive a display name from the filename
+              const rawName = match.image_url
+                .split("/")
+                .pop()
+                .replace(/\.[^/.]+$/, "")
+                .replace(/_/g, " ");
+              const displayName = rawName.replace(/\b\w/g, (c) => c.toUpperCase());
+
+              // Determine if this card is selected
+              const isSelected = selectedCelebIndex === index;
+
+              return (
+                <div
+                  key={index}
+                  className={`${styles.celebCard} ${
+                    isSelected ? styles.selectedCelebCard : ""
+                  }`}
+                  onClick={() => {
+                    setSelectedCelebIndex(index);
+                    console.log(`Clicked on celeb #${index + 1}: ${displayName}`);
+                  }}
+                >
+                  {/* The numbered circle */}
+                  <div className={styles.celebNumber}>{index + 1}</div>
+
+                  {/* The celeb image */}
+                  <img
+                    src={fullImageUrl}
+                    alt={displayName}
+                    className={styles.celebImg}
+                  />
+
+                  {/* A hidden tooltip that shows on hover */}
+                  <div className={styles.celebTooltip}>
+                    {displayName}
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>

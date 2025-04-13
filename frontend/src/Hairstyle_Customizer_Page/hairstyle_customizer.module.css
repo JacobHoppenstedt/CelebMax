@@ -97,45 +97,48 @@
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     padding: 20px;
 
-    max-height: 95%;
+    max-height: 53%;
+    justify-items: center;
     overflow-y: hidden;
-}
-
-.transformationContainer {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
 }
 
 /* Each section (Original and Modified) */
 .section {
     text-align: center;
     margin-bottom: 20px;
+    margin-top: 20px;
 }
 
 /* The small section title text (e.g. "Your Original Picture") */
 .sectionTitle {
-    font-size: 1.2rem;
-    color: #fff;
+    font-size: 1.1rem;
+    color: #E8E8E8;
     margin-bottom: 0.5rem;
 }
 
 /* The user’s image in each section */
-.userPicture {
+.userOriginalPicture {
     width: 140px;
     height: auto;
     object-fit: cover;
+    border: 5px solid #AA8B6D;
     border-radius: 10px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
 
-.arrowIcon {
-    width: 40px;
-    margin: 20px 0;
+.userModifiedPicture {
+  width: 140px;
+  height: auto;
+  object-fit: cover;
+  border: 5px solid #3C3127;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
 
+.arrowIcon {
+    width: 30px;
+
+}
 
 
 /* ------- "Choose a Celebrity" section ------- */
@@ -150,64 +153,59 @@
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     padding: 20px;
 
-    max-height: 95%;
+    max-height: 53%;
     overflow-y: hidden;
 }
 
 .chooseTitle {
-    font-size: 1.6rem;
-    color: #ffffff;
+    font-size: 1.1rem;
+    color: #E8E8E8;
     margin-top: 0;
     margin-bottom: 0.4rem;
     text-align: center;
   }
   
 .chooseSubtitle {
-    font-size: 0.95rem;
-    color: #f2f2f2;
+    font-size: 0.8rem;
+    color: #D2D2D2;
     margin-bottom: 1rem;
     text-align: center;
 }
 
-/*
-* This container holds the list of celeb cards
-* We'll make it scrollable with max-height + overflow-y
-*/
+
 .celebScrollContainer {
-    flex: 1;
-    display: grid;
-    grid-template-columns: repeat(2, 120px); /* each column is 120px */
-    grid-template-rows: repeat(2, 165px);
-    column-gap: 0.5rem;
-    justify-content: center;
-    justify-items: center;
-    overflow-y: auto;
-    padding-top: 1.5rem
-  }
+  /* Fill up the remaining vertical space of the parent .chooseCelebrityDiv */
+  flex: 1;
+  display: grid;
+
+  /* 2 columns across, each 160px wide, automatically creating as many rows as needed */
+  grid-template-columns: repeat(2, 160px);
+  grid-auto-rows: 180px;
+
+  column-gap: 0.5rem;
+  justify-content: center;
+  justify-items: center;
+
+  /* The important part: allow scrolling */
+  overflow-y: auto;
+  padding-top: 1.5rem;
+  
+}
   
   /* OPTIONAL: you can keep or remove your custom scrollbar styling */
   .celebScrollContainer::-webkit-scrollbar {
     width: 8px;
   }
   .celebScrollContainer::-webkit-scrollbar-track {
-    background: rgba(0, 0, 0, 0.2);
+    background: rgba(0, 0, 0, 0.1);
     border-radius: 4px;
   }
   .celebScrollContainer::-webkit-scrollbar-thumb {
-    background: #AA8B6D;
-    border-radius: 4px;
+    background: #6f5a46;
+    border-radius: 20px;
   }
 
 /* Celebrity card: a small image with a numbered circle */
-.celebCard {
-    position: relative;      /* needed for .celebNumber absolute positioning */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100px;            /* or 130px if you prefer */
-    cursor: pointer;         /* show pointer on hover */
-}
-
 /* Circle with the number in it */
 .celebNumber {
     position: absolute;
@@ -234,6 +232,78 @@
     border-radius: 16px;
     margin-bottom: 0.5rem;
     border: 5px solid #AA8B6D;
+}
+
+/* The celeb card container */
+.celebCard {
+  position: relative;      /* needed for .celebNumber and .celebTooltip positioning */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+/* When hovering over the card, scale it slightly */
+.celebCard:hover {
+  transform: scale(1.05);
+}
+
+/* Circle with the number in it */
+.celebNumber {
+  position: absolute;
+  top: -12px;
+  left: -12px;
+  background: #AA8B6D;
+  color: white;
+  font-size: 1.2rem;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* The celeb image with border and corner rounding */
+.celebImg {
+  width: 100px;
+  height: auto;
+  object-fit: cover;
+  border-radius: 16px;
+  margin-bottom: 0.5rem;
+  border: 5px solid #AA8B6D;
+}
+
+/* --- Tooltip that shows the celeb name on hover --- */
+.celebTooltip {
+  position: absolute;
+  bottom: 1.5rem; /* position below the card (adjust as you like) */
+  color: #D2D2D2;
+  padding: 4px 8px;
+  font-size: 0.8rem;
+  border-radius: 2px;
+  white-space: nowrap;
+  pointer-events: none;
+  visibility: hidden;
+  transition: opacity 0.2s;
+}
+
+/* Show the tooltip on hover */
+.celebCard:hover .celebTooltip {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* --- When a celeb is clicked, highlight the card in #3C3127 --- */
+.selectedCelebCard .celebImg {
+  border-color: #3C3127;
+}
+
+.selectedCelebCard .celebNumber {
+  background: #3C3127;
 }
 
   
