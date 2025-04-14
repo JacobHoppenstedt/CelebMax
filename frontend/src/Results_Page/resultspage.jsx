@@ -44,14 +44,18 @@ const ResultsPage = () => {
 
   function handleNameClick(celebName) {
     // Navigate to /celeb-search route, passing the celebName
-    navigate("/celeb-search", {
+    /*navigate("/celeb-search", {
       state: {
         celebName,
         matchData,
         topMatches,
         userFile,
       },
-    });
+    });*/
+
+    //takes out the need for the celeb search page
+    const query = encodeURIComponent(celebName);
+    window.open(`https://www.google.com/search?tbm=isch&q=${query}`, '_blank');
   }
 
   function handleGoToHairstyles() {
