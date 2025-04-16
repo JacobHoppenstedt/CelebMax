@@ -20,6 +20,11 @@ services:
     container_name: celeb_python_service
     ports:
       - "5001:5001"
+      - "5002:5002"
+    environment:
+      # pass your Fal.ai API key into the container
+      - FAL_KEY=${FAL_KEY}
+
 
   frontend:
     build:

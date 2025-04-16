@@ -79,7 +79,7 @@ button:focus-visible {
 
 @font-face {
   font-family: 'OceanTrace';
-  src: url(../public/fonts/OceanTrace.woff) format('woff');
+  src: url(../fonts/OceanTrace.woff) format('woff');
 }
 
 .poppins-thin {

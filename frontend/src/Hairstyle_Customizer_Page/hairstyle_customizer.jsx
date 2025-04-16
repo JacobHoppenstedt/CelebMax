@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import styles from "./hairstyle_customizer.module.css";
 
@@ -10,29 +10,87 @@ const HairstyleCustomizer = () => {
   const navigate = useNavigate();
   const { state } = useLocation();
 
-  // If you need the user's file or its URL:
+  // Grab user file / URL from router state
   const userFile = state?.userFile;
   const userImageUrl =
     state?.userImageUrl || (userFile ? URL.createObjectURL(userFile) : null);
-  const matchData = state?.matchData;
-  const currentPage = state?.currentPage;
 
+  const matchData = state?.matchData;
   const topMatches = matchData?.top_matches || [];
   const topTenCelebs = topMatches.slice(0, 10);
 
-  // Track which celeb is selected (store the index)
+  // Which celeb the user clicked
   const [selectedCelebIndex, setSelectedCelebIndex] = useState(null);
 
-  // Go back to the Results page
-  function handleGoBack() {
-    navigate("/results", {
-      state: {
-        userFile,
-        matchData,
-        currentPage,
-      }
+  // Hairstyle generation state
+  const [loading, setLoading] = useState(false);
+  const [generatedUrl, setGeneratedUrl] = useState(null);
+  const [error, setError] = useState(null);
+
+  // Helper to convert File → base64 data URL
+  const fileToDataUrl = (file) =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
     });
-  }
+
+  // Whenever selectedCelebIndex changes, kick off the model call
+  useEffect(() => {
+    if (selectedCelebIndex == null) return;
+
+    (async () => {
+      setLoading(true);
+      setError(null);
+      setGeneratedUrl(null);
+
+      try {
+        // 1) Prepare face image: either upload it beforehand
+        //    or convert to base64 on the fly:
+        let faceImagePayload = userImageUrl;
+        if (userFile) {
+          faceImagePayload = await fileToDataUrl(userFile);
+        }
+
+        // 2) Celebrity image URL on your server
+        const celebMatch = topTenCelebs[selectedCelebIndex];
+        const celebImageUrl = `http://localhost:5001${celebMatch.image_url}`;
+
+        // 3) Call Flask endpoint
+        const res = await fetch(
+          `http://localhost:5002/generate-hairstyle`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              faceImageUrl: faceImagePayload,
+              celebImageUrl,
+            }),
+          }
+        );
+        if (!res.ok) throw new Error(`Status ${res.status}`);
+        const data = await res.json();
+
+        if (data.hairstyleUrl) {
+          setGeneratedUrl(data.hairstyleUrl);
+        } else if (data.hairstyleBase64) {
+          setGeneratedUrl(`data:image/png;base64,${data.hairstyleBase64}`);
+        } else {
+          throw new Error(data.error || "Unexpected response");
+        }
+      } catch (e) {
+        console.error(e);
+        setError(e.message);
+      } finally {
+        setLoading(false);
+      }
+    })();
+  }, [selectedCelebIndex, userFile, userImageUrl, topTenCelebs]);
+
+  const handleGoBack = () => {
+    navigate("/results", { state: { userFile, matchData: matchData, currentPage: state?.currentPage } });
+  };
 
   return (
     <div className={styles.hairstyleCustomizer}>
@@ -46,10 +104,10 @@ const HairstyleCustomizer = () => {
         </button>
       </header>
 
-      {/* Content with two large rounded divs */}
+      {/* Main content */}
       <div className={styles.content}>
         <div className={styles.modifiedHairstyleDiv}>
-          {/* "Your Original Picture" section */}
+          {/* Original */}
           <div className={styles.section}>
             <h2 className={styles.sectionTitle}>Your Original Picture</h2>
             {userImageUrl && (
@@ -65,42 +123,56 @@ const HairstyleCustomizer = () => {
             <img src={ArrowDown} alt="Arrow" className={styles.arrowIcon} />
           </div>
 
-          {/* "Modified Hairstyle" section (currently same image) */}
+          {/* Modified */}
           <div className={styles.section}>
             <h2 className={styles.sectionTitle}>Modified Hairstyle</h2>
-            {userImageUrl && (
+
+            {loading && (
+              <div className={styles.spinnerContainer}>
+                <div className={styles.spinner} />
+                <p>Generating...</p>
+              </div>
+            )}
+
+            {error && (
+              <p className={styles.error}>Error: {error}</p>
+            )}
+
+            {!loading && !error && generatedUrl && (
               <img
-                src={userImageUrl}
-                alt="Modified"
+                src={generatedUrl}
+                alt="Generated Hairstyle"
                 className={styles.userModifiedPicture}
               />
+            )}
+
+            {/* Placeholder before selection */}
+            {!loading && !error && !generatedUrl && selectedCelebIndex == null && (
+              <p className={styles.placeholder}>
+                Click a celebrity to try their style
+              </p>
             )}
           </div>
         </div>
 
-        {/* ---------- Right Div: Choose Celebrity Div ---------- */}
+        {/* Celebrity picker */}
         <div className={styles.chooseCelebrityDiv}>
-          {/* Title and subtitle */}
           <h2 className={styles.chooseTitle}>Choose a Celebrity</h2>
           <p className={styles.chooseSubtitle}>
             Click on a celebrity’s image to switch your hairstyle
           </p>
 
-          {/* Scrollable container of celebrity cards */}
           <div className={styles.celebScrollContainer}>
             {topTenCelebs.map((match, index) => {
-              // Same logic you used in the results page to build the image URL
               const fullImageUrl = `http://localhost:5001${match.image_url}`;
-
-              // Derive a display name from the filename
               const rawName = match.image_url
                 .split("/")
                 .pop()
                 .replace(/\.[^/.]+$/, "")
                 .replace(/_/g, " ");
-              const displayName = rawName.replace(/\b\w/g, (c) => c.toUpperCase());
-
-              // Determine if this card is selected
+              const displayName = rawName.replace(/\b\w/g, (c) =>
+                c.toUpperCase()
+              );
               const isSelected = selectedCelebIndex === index;
 
               return (
@@ -111,23 +183,15 @@ const HairstyleCustomizer = () => {
                   }`}
                   onClick={() => {
                     setSelectedCelebIndex(index);
-                    console.log(`Clicked on celeb #${index + 1}: ${displayName}`);
                   }}
                 >
-                  {/* The numbered circle */}
                   <div className={styles.celebNumber}>{index + 1}</div>
-
-                  {/* The celeb image */}
                   <img
                     src={fullImageUrl}
                     alt={displayName}
                     className={styles.celebImg}
                   />
-
-                  {/* A hidden tooltip that shows on hover */}
-                  <div className={styles.celebTooltip}>
-                    {displayName}
-                  </div>
+                  <div className={styles.celebTooltip}>{displayName}</div>
                 </div>
               );
             })}
