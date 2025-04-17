@@ -3,7 +3,7 @@ import os
 from API_KEY import API_KEY
 os.environ["FAL_KEY"] = API_KEY
 
-def on_queue_update(update, img1, img2, img3):
+def on_queue_update(update):
     if isinstance(update, fal_client.InProgress):
         for log in update.logs:
             print(log["message"])
