@@ -12,8 +12,7 @@ const HairstyleCustomizer = () => {
 
   // Grab user file / URL from router state
   const userFile = state?.userFile;
-  const userImageUrl =
-    state?.userImageUrl || (userFile ? URL.createObjectURL(userFile) : null);
+  const userImageUrl = state?.userImageUrl || null;
 
   const matchData = state?.matchData;
   const topMatches = matchData?.top_matches || [];
@@ -37,57 +36,43 @@ const HairstyleCustomizer = () => {
     });
 
   // Whenever selectedCelebIndex changes, kick off the model call
-  useEffect(() => {
-    if (selectedCelebIndex == null) return;
+  
+useEffect(() => {
+  if (selectedCelebIndex === null) return;
+  if (loading) return;
 
-    (async () => {
-      setLoading(true);
-      setError(null);
-      setGeneratedUrl(null);
+  (async () => {
+    setLoading(true); setError(null); setGeneratedUrl(null);
+    try {
+      // Use the public S3 URL directly:
+      const faceImagePayload = userImageUrl;
 
-      try {
-        // 1) Prepare face image: either upload it beforehand
-        //    or convert to base64 on the fly:
-        let faceImagePayload = userImageUrl;
-        if (userFile) {
-          faceImagePayload = await fileToDataUrl(userFile);
-        }
+      // Build the celeb’s S3 URL as before...
+      const celebMatch = topTenCelebs[selectedCelebIndex];
+      const key = celebMatch.image_url.replace(/^\/celebrity_images\//, "");
+      const celebImageUrl =
+        `https://celebmax.s3.us-east-2.amazonaws.com/${key}`;
 
-        // 2) Celebrity image URL on your server
-        const celebMatch = topTenCelebs[selectedCelebIndex];
-        const key = celebMatch.image_url.replace(/^\/celebrity_images\//, "");
-        const celebImageUrl = `https://celebmax.s3.us-east-2.amazonaws.com/${key}`;
-
-        // 3) Call Flask endpoint
-        const res = await fetch(
-          `http://localhost:5002/generate-hairstyle`,
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              faceImageUrl: faceImagePayload,
-              celebImageUrl,
-            }),
-          }
-        );
-        if (!res.ok) throw new Error(`Status ${res.status}`);
-        const data = await res.json();
-
-        if (data.hairstyleUrl) {
-          setGeneratedUrl(data.hairstyleUrl);
-        } else if (data.hairstyleBase64) {
-          setGeneratedUrl(`data:image/png;base64,${data.hairstyleBase64}`);
-        } else {
-          throw new Error(data.error || "Unexpected response");
-        }
-      } catch (e) {
-        console.error(e);
-        setError(e.message);
-      } finally {
-        setLoading(false);
-      }
-    })();
-  }, [selectedCelebIndex, userFile, userImageUrl, topTenCelebs]);
+      // Call your hairstyle endpoint:
+      const res = await fetch("http://localhost:5002/generate-hairstyle", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ faceImageUrl: faceImagePayload, celebImageUrl })
+      });
+      if (!res.ok) throw new Error(`Status ${res.status}`);
+      const data = await res.json();
+      setGeneratedUrl(
+        data.hairstyleUrl
+          ? data.hairstyleUrl
+          : `data:image/png;base64,${data.hairstyleBase64}`
+      );
+    } catch (e) {
+      setError(e.message);
+    } finally {
+      setLoading(false);
+    }
+  })();
+}, [selectedCelebIndex]);
 
   const handleGoBack = () => {
     navigate("/results", { state: { userFile, matchData: matchData, currentPage: state?.currentPage } });
@@ -128,6 +113,7 @@ const HairstyleCustomizer = () => {
           <div className={styles.section}>
             <h2 className={styles.sectionTitle}>Modified Hairstyle</h2>
 
+            {/* 1) Loading spinner */}
             {loading && (
               <div className={styles.spinnerContainer}>
                 <div className={styles.spinner} />
@@ -135,10 +121,12 @@ const HairstyleCustomizer = () => {
               </div>
             )}
 
-            {error && (
+            {/* 2) Error only after a click */}
+            {selectedCelebIndex !== null && error && (
               <p className={styles.error}>Error: {error}</p>
             )}
 
+            {/* 3) Show the generated image if we have one */}
             {!loading && !error && generatedUrl && (
               <img
                 src={generatedUrl}
@@ -147,12 +135,13 @@ const HairstyleCustomizer = () => {
               />
             )}
 
-            {/* Placeholder before selection */}
-            {!loading && !error && !generatedUrl && selectedCelebIndex == null && (
+            {/* 4) Placeholder before any click */}
+            {selectedCelebIndex === null && !loading && !generatedUrl && (
               <p className={styles.placeholder}>
-                Click a celebrity to try their style
+                Your result will show up here
               </p>
             )}
+
           </div>
         </div>
 

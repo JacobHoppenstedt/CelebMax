@@ -75,7 +75,8 @@ const LandingPage = () => {
     
         const data = await response.json();
         console.log("AI Response =>", data);
-    
+        console.log("Your S3 URL:", data.user_image_url);
+        
         if (data.error) {
           toast.error(data.error);
           setFile(null);

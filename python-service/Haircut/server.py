@@ -17,6 +17,7 @@ def generate_hairstyle_route():
        }
     """
     data = request.get_json()
+    print(">>> Received POST /generate-hairstyle with:", data)
     face_url = data.get("faceImageUrl")
     celeb_url = data.get("celebImageUrl")
 

@@ -15,9 +15,11 @@ const ResultsPage = () => {
   const navigate = useNavigate();
   const { state } = useLocation();
 
-  // The user's original file
   const userFile = state?.userFile;
-  const userImageUrl = userFile ? URL.createObjectURL(userFile) : null;
+  const s3UserImageUrl = state?.matchData?.user_image_url;
+  
+  // Prefer the public S3 URL if present, otherwise fall back to the local blob
+  const userImageUrl = s3UserImageUrl || (userFile ? URL.createObjectURL(userFile) : null);
 
   // The AI response from backend
   const matchData = state?.matchData;
