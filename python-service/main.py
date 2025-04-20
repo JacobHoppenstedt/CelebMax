@@ -44,7 +44,7 @@ def predict():
     if img is None:
         return jsonify({"error": "Unable to read the image file"}), 400
     # Resize regardless of original size
-    img_resized = cv2.resize(img, (224, 224), interpolation=cv2.INTER_AREA)
+    img_resized = cv2.resize(img, (1024, 1024), interpolation=cv2.INTER_AREA)
     # Overwrite the temp file with the resized image
     cv2.imwrite(user_img_path, img_resized)
 
