@@ -72,3 +72,63 @@ test('navigates to the Hairstyle Customizer page when the back button is clicked
   // Claim that the URL changed to '/'
   expect(window.location.pathname).toBe('/hairstyle_customizer');
 });
+
+test('renders the user image with correct alt text', () => {
+  // Render the component
+  render(
+      <BrowserRouter>
+          <ResultsPage />
+      </BrowserRouter>
+      );
+
+  //Get the user image by alt text
+  const image = screen.getByAltText('Your Picture');
+
+  //See if image is in results page
+  expect(image).toBeInTheDocument();
+});
+
+test('displays the subheading1 text', () => {
+  // Render the component
+  render(
+      <BrowserRouter>
+          <ResultsPage />
+      </BrowserRouter>
+      );
+
+  //Gets the subheading component by text
+  const subheading1 = screen.getByText('Your Picture');
+
+  //See if subheading text is in results page
+  expect(subheading1).toBeInTheDocument();
+});
+
+test('displays the subheading2 text', () => {
+  // Render the component
+  render(
+      <BrowserRouter>
+          <ResultsPage />
+      </BrowserRouter>
+      );
+
+  //Gets the subheading component by text
+  const subheading2 = screen.getByText('Matched Celebrities');
+
+  //See if subheading text is in results page
+  expect(subheading2).toBeInTheDocument();
+});
+
+test('checks if the right arrow button for carousel is present', () => {
+  //Render the component
+  render(
+    <BrowserRouter>
+        <ResultsPage />
+    </BrowserRouter>
+    );
+
+  // Query by the alt text of the image inside the button
+  const button = screen.getByAltText('Right arrow');
+
+  // Verify that the button with the alt text is in the document
+  expect(button).toBeInTheDocument();
+});
