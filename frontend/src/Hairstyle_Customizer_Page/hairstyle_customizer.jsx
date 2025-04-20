@@ -55,7 +55,8 @@ const HairstyleCustomizer = () => {
 
         // 2) Celebrity image URL on your server
         const celebMatch = topTenCelebs[selectedCelebIndex];
-        const celebImageUrl = `http://localhost:5001${celebMatch.image_url}`;
+        const key = celebMatch.image_url.replace(/^\/celebrity_images\//, "");
+        const celebImageUrl = `https://celebmax.s3.us-east-2.amazonaws.com/${key}`;
 
         // 3) Call Flask endpoint
         const res = await fetch(
@@ -164,7 +165,8 @@ const HairstyleCustomizer = () => {
 
           <div className={styles.celebScrollContainer}>
             {topTenCelebs.map((match, index) => {
-              const fullImageUrl = `http://localhost:5001${match.image_url}`;
+              const key = match.image_url.replace(/^\/celebrity_images\//, "");
+              const fullImageUrl = `https://celebmax.s3.us-east-2.amazonaws.com/${key}`;
               const rawName = match.image_url
                 .split("/")
                 .pop()
