@@ -8,17 +8,12 @@ import insightface
 import boto3
 from io import BytesIO
 import aws_credentials
+import uuid  # For generating unique filenames
 
 app = Flask(__name__)
 
-# Paths to the model and data files
-kmeans_model_file = "kmeans_model.pkl"
+# Path to the clustered embeddings (without clustering now)
 clustered_output_path = "clustered_embeddings.npy"
- 
-
-
-
-
 
 # Initialize Boto3 client to interact with S3
 s3_client = boto3.client('s3', 
@@ -26,22 +21,21 @@ s3_client = boto3.client('s3',
                          aws_secret_access_key=aws_credentials.AWS_SECRET_ACCESS_KEY,
                          region_name=aws_credentials.AWS_DEFAULT_REGION)
 
+# S3 bucket for storing user images
+user_images_bucket = "celebmaxuserimage"  
 
 # Load the FaceAnalysis model from InsightFace
 model = insightface.app.FaceAnalysis(name="buffalo_l", providers=['CPUExecutionProvider'])
 model.prepare(ctx_id=-1, det_size=(224, 224))
 
-# Load the KMeans model and clustered embeddings
-kmeans = joblib.load(kmeans_model_file)
-clustered_embeddings_with_filenames = np.load(clustered_output_path, allow_pickle=True)
+# Load the stored embeddings with filenames
+embeddings_with_filenames = np.load(clustered_output_path, allow_pickle=True)
 
 @app.route('/predict', methods=['POST'])
 def predict():
-    # Check if an image file is provided in the request
     if 'image' not in request.files:
         return jsonify({"error": "No image file provided"}), 400
 
-    # Save the uploaded image temporarily
     file = request.files['image']
     user_img_path = "temp_user_image.jpg"
     file.save(user_img_path)
@@ -52,33 +46,44 @@ def predict():
     img = cv2.resize(img, (224, 224))
 
     try:
-        # Generate embedding for the user's image using DeepFace
         faces = model.get(img)
         if not faces:
             return jsonify({"error": "No faces detected in the image, please try again!"}), 400
 
-        # Check if multiple faces are detected and use the first one
         if len(faces) > 1:
             return jsonify({"error": "Multiple faces detected in the image, please try again!"}), 400
 
-        user_embedding = faces[0].normed_embedding  # Get the embedding
-        user_embedding = np.array(user_embedding, dtype=np.float32)
-        user_cluster = kmeans.predict(user_embedding.reshape(1, -1))[0]
+        user_embedding = np.array(faces[0].normed_embedding, dtype=np.float32)
         similarity_scores = []
-        
-        for row in clustered_embeddings_with_filenames:  # Iterate through all images
-            img_file, *celeb_embedding, cluster_id = row  # Extract filename, embedding, and cluster
-            celeb_embedding = np.array(celeb_embedding, dtype=np.float32)  # Ensure correct dtype
-    
-            distance = cosine(user_embedding, celeb_embedding)  # Compute cosine similarity
+
+        for row in embeddings_with_filenames:
+            img_file = row[0]
+            celeb_embedding = np.array(row[1:-1], dtype=np.float32)
+            distance = cosine(user_embedding, celeb_embedding)
             similarity_scores.append((img_file, distance))
 
-        # Sort by distance and get the top 10 matches
         top_10_matches = sorted(similarity_scores, key=lambda x: x[1])[:10]
 
-        # Prepare the response
+        # Generate a unique filename for the user's uploaded image
+        unique_img_key = f"user_images/{str(uuid.uuid4())}.jpg"
+
+        # Upload the user's image to S3 with public-read ACL
+        with open(user_img_path, 'rb') as img_file:
+            s3_client.put_object(
+                Bucket=user_images_bucket,
+                Key=unique_img_key,
+                Body=img_file,
+                ContentType='image/jpeg',
+                ACL='public-read'  # Make the image publicly readable
+            )
+
+        # Save the user's image name into a text file
+        with open("data/user_image_names.txt", "a") as f:
+            f.write(f"{unique_img_key}\n")
+
+        # Prepare the response with the image URL
         response = {
-            "user_cluster": int(user_cluster),
+            "user_image_url": f"https://{user_images_bucket}.s3.amazonaws.com/{unique_img_key}",
             "top_matches": [
                 {
                     "image": img_file,
@@ -95,27 +100,18 @@ def predict():
         return jsonify({"error": str(e)}), 500
 
     finally:
-        # Clean up: Delete the temporary user image file
         if os.path.exists(user_img_path):
             os.remove(user_img_path)
 
-# Endpoint to serve celebrity images from S3
 @app.route('/celebrity_images/<filename>', methods=['GET'])
 def get_celebrity_image(filename):
     try:
-        # Fetch the celebrity image from S3 using Boto3
+        # Fetch celebrity image from S3 bucket
         s3_object = s3_client.get_object(Bucket="celebmax", Key=filename)
-        
-        # Read the image data from S3
         img_data = s3_object['Body'].read()
-
-        # Return the image directly as a response with the correct MIME type
         return send_file(BytesIO(img_data), mimetype='image/jpeg')
-
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
 if __name__ == '__main__':
-    # Run the Flask app
     app.run(host='0.0.0.0', port=5001)
-
