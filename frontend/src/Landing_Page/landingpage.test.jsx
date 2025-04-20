@@ -122,4 +122,94 @@ describe("LandingPage", () => {
         // Wait for the animation to complete (checking opacity change to 1)
         await waitFor(() => expect(textElement).toHaveStyle('opacity: 1'), { timeout: 3000 })
       })
+
+      test('renders the image with correct alt text', () => {
+        // Render the component
+        render(
+            <BrowserRouter>
+                <LandingPage />
+            </BrowserRouter>
+            );
+
+        //Get the image by alt text
+        const image = screen.getByAltText('Celeb1');
+
+        //see if image is in landing page
+        expect(image).toBeInTheDocument();
+      });
+
+      test('renders the image2 with correct alt text', () => {
+        // Render the component
+        render(
+            <BrowserRouter>
+                <LandingPage />
+            </BrowserRouter>
+            );
+
+        //Get the image by alt text
+        const image = screen.getByAltText('Celeb2');
+
+        //see if image is in landing page
+        expect(image).toBeInTheDocument();
+      });
+
+      test('renders the image3 with correct alt text', () => {
+        // Render the component
+        render(
+            <BrowserRouter>
+                <LandingPage />
+            </BrowserRouter>
+            );
+
+        //Get the image by alt text
+        const image = screen.getByAltText('Celeb3');
+
+        //see if image is in landing page
+        expect(image).toBeInTheDocument();
+      });
+
+      test('renders the image4 with correct alt text', () => {
+        // Render the component
+        render(
+            <BrowserRouter>
+                <LandingPage />
+            </BrowserRouter>
+            );
+
+        //Get the image by alt text
+        const image = screen.getByAltText('Celeb4');
+
+        //see if image is in landing page
+        expect(image).toBeInTheDocument();
+      });
+
+      test('displays the subheading text', () => {
+        // Render the component
+        render(
+            <BrowserRouter>
+                <LandingPage />
+            </BrowserRouter>
+            );
+
+        //Gets the subheading component by text
+        const subheading = screen.getByText('Find Your Look, Inspired By Stars.');
+
+        //See if subheading text is in landing page
+        expect(subheading).toBeInTheDocument();
+      });
+
+      test('displays the rule1 text', () => {
+        // Render the component
+        render(
+            <BrowserRouter>
+                <LandingPage />
+            </BrowserRouter>
+            );
+
+        //Gets the subheading component by text
+        const rule1 = screen.getByText('1. Upload a picture of yourself, and our AI will instantly find celebrities who resemble you.');
+
+        //See if subheading text is in landing page
+        expect(rule1).toBeInTheDocument();
+      });
 });
