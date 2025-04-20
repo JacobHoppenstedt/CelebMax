@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import styles from "./hairstyle_customizer.module.css";
+import { motion } from 'framer-motion';
 
 import Logo from "../assets/logo.png";
 import Back from "../assets/Back.png";
@@ -97,10 +98,13 @@ useEffect(() => {
           <div className={styles.section}>
             <h2 className={styles.sectionTitle}>Your Original Picture</h2>
             {userImageUrl && (
-              <img
+              <motion.img
                 src={userImageUrl}
                 alt="Original"
                 className={styles.userOriginalPicture}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 2 }}
               />
             )}
           </div>
@@ -177,10 +181,13 @@ useEffect(() => {
                   }}
                 >
                   <div className={styles.celebNumber}>{index + 1}</div>
-                  <img
+                  <motion.img
                     src={fullImageUrl}
                     alt={displayName}
                     className={styles.celebImg}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.75, duration: 2 }}
                   />
                   <div className={styles.celebTooltip}>{displayName}</div>
                 </div>
