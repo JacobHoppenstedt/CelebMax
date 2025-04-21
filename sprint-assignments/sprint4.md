@@ -14,7 +14,7 @@
 - **Added a loading spinner and user‑feedback states in the Customizer**  
   Introduced a CSS spinner component and conditional render blocks in `hairstyle_customizer.jsx` that show “Generating…” while the AI model runs, display an error message on failure, and render the final hairstyle image once ready. This gives clear progress feedback and improves perceived performance.
 
-## Front-End Unit Tests
+## Front-End Unit Tests and Cypress Test
 
 _(can be found in `landingpage.test.jsx`, `resultspage.test.jsx`, `hairstyle_customizer.test.jsx`, and `landingpage.cy.js`)_
 
