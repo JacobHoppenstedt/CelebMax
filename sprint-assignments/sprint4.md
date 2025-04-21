@@ -13,3 +13,42 @@
 
 - **Added a loading spinner and user‑feedback states in the Customizer**  
   Introduced a CSS spinner component and conditional render blocks in `hairstyle_customizer.jsx` that show “Generating…” while the AI model runs, display an error message on failure, and render the final hairstyle image once ready. This gives clear progress feedback and improves perceived performance.
+
+## Front-End Unit Tests
+
+_(can be found in `landingpage.test.jsx`, `resultspage.test.jsx`, `hairstyle_customizer.test.jsx`, and `landingpage.cy.js`)_
+
+**Landing Page:**
+- Open File Dialog is called when “Upload Photo” button is clicked.
+- File explorer opens after “Upload Photo” button is clicked.
+- Application logo appears on the landing page.
+- Landing page images are horizontally aligned.
+- Framer motion fade animation works on celebrity image
+- Framer motion fade animation works on line of text
+- Rendering of Celeb 1 image on screen
+- Rendering of Celeb 2 image on screen
+- Rendering of Celeb 3 image on screen
+- Rendering of Celeb 4 image on screen
+- Subheading text is visible on screen
+- Rule 1 text is visible on screen
+
+**Results Page:**
+- “Go Back” button on results page navigates back to the landing page of the application.
+- Application logo appears on results page.
+- Framer motion fade animation works on user uploaded picture
+- Button labeled "Try A Celebrity's Hairstyle appropriately navigates to Hairstyle Customizer page upon click
+- Correct user image appears on results screen
+- Subheading 1 text for user picture appears on screen
+- Subheading 2 text for matched celebrities appears on screen
+- Right arrow button for carousel functionality is present on screen
+
+**Hairstle Customizer Page:**
+- Logo image appears on the page
+- "Go Back" button appropriately navigates back to results page upon click
+- Original picture section text appears on screen
+- Arrow from original to modified is present on screen
+- Modified picture section text appears on screen
+- Celebrity choosing section text is visible on screen
+
+**Cypress Test:**
+- Simple test to ensure that the “Upload Photo” button component is visible on the landing page.
