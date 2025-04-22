@@ -68,3 +68,22 @@ _(can be found in `landingpage.test.jsx`, `resultspage.test.jsx`, `hairstyle_cus
 
 **Cypress Test:**
 - Simple test to ensure that the “Upload Photo” button component is visible on the landing page.
+
+
+
+## Back-End Unit Tests and Integration Tests
+
+
+**`/generate-hairstyle` Endpoint:**
+- Successfully returns a 200 status code when valid user and celebrity image URLs are provided.
+- Returns a valid JSON response containing the generated image or result URL.
+- Returns a 400 status code with appropriate error message when required parameters are missing.
+- Returns a 500 status code when the AI model fails to generate an image.
+- Handles timeouts and server-side exceptions gracefully with descriptive error responses.
+- Validates incoming data to prevent malformed payloads.
+
+**Image Processing Utilities (`utils.py`):**
+- Correctly preprocesses input images (resize, format conversion).
+- Generates temporary files and deletes them after processing.
+- Validates image URL accessibility before downloading.
+
