@@ -14,6 +14,22 @@
 - **Added a loading spinner and user‑feedback states in the Customizer**  
   Introduced a CSS spinner component and conditional render blocks in `hairstyle_customizer.jsx` that show “Generating…” while the AI model runs, display an error message on failure, and render the final hairstyle image once ready. This gives clear progress feedback and improves perceived performance.
 
+
+## Back-End Work Completed
+
+- **Developed the `/generate-hairstyle` endpoint for AI integration**  
+  Built a new Flask route to receive POST requests from the front end containing user and celebrity image URLs. The endpoint processes inputs, calls the AI model to generate a customized hairstyle, and returns a URL or base64-encoded image in a structured JSON response.
+
+- **Removed outdated clustering logic for improved performance**  
+  Deprecated and cleaned up the previous celebrity clustering code that grouped similar faces. This simplification reduced backend processing time, cut unnecessary dependencies, and aligned the system more closely with the updated front-end flow.
+
+- **Implemented error handling and response validation**  
+  Added robust try/except blocks around the AI model invocation to catch timeouts, missing parameters, and generation failures. Sent descriptive error messages and status codes back to the client to support frontend feedback states like spinners or error messages.
+
+- **Optimized image handling and caching**  
+  Used Pillow and temporary file storage to preprocess and cache images on the server, reducing redundant computation and speeding up repeated requests. Added logic to delete stale files and manage disk usage.
+
+
 ## Front-End Unit Tests and Cypress Test
 
 _(can be found in `landingpage.test.jsx`, `resultspage.test.jsx`, `hairstyle_customizer.test.jsx`, and `landingpage.cy.js`)_
